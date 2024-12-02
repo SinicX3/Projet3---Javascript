@@ -186,3 +186,27 @@ footer nav ul {
 	margin: 2em
 }
 
+/** Filters **/
+
+.ul_div {
+	display: flex;
+	justify-content: center;
+	margin: 40px;
+	color:#1D6154;
+}
+
+.li_div {
+	margin:5px;
+	min-width:70px;
+	text-align: center;
+	border: solid #1D6154;
+	border-radius: 60px;
+	border-width: 1px;
+	padding:10px 8px 10px 8px;
+	font-family: 'Syne';
+}
+
+.li_div:hover {
+	background-color: #1D6154;
+	color:white;
+}
