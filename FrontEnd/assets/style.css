@@ -28,38 +28,61 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 body {
 	line-height: 1;
 }
+
 ol, ul {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
 	content: '';
 	content: none;
 }
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 /** end reset css**/
 body {
-	max-width: 1140px;
 	margin:auto;
-	font-family: 'Work Sans' ;
+	max-width: 1140px;
+	font-family: 'Work Sans';
 	font-size: 14px;
+	background-color: #fffff7;
 }
+
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
+	width: 110%;
 }
+
+footer {
+	position:absolute;
+	left:0;
+	margin:0px;
+	width: 100vw;
+	height:5%;
+	background-color: white;
+}
+
 section {
-	margin: 50px 0
+	margin: 50px 0;
+}
+
+a {
+	color:black;
 }
 
 h1{
@@ -88,32 +111,40 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
-
 }
+
 nav li {
-	padding: 0 10px;
+	padding: 0 0 0 50px;
 	font-size: 1.2em;
+}
+
+nav li img {
+	width:20px;
 }
 
 li:hover {
 	color: #B1663C;
 }
+
 #introduction {
 	display: flex;
 	align-items: center;
 }
+
 #introduction figure {
 	flex: 1
 }
+
 #introduction img {
 	display: block;
-	margin: auto;
-	width: 80%;
+	width: 90%;
+	margin: 80px 0px ;
 }
 
 #introduction article {
-	flex: 1
+	width:45%;
 }
+
 #introduction h2 {
 	margin-bottom: 1em;
 }
@@ -137,34 +168,45 @@ li:hover {
 	width: 100%;
 
 }
+
 #contact {
 	width: 50%;
-margin: auto;
+ 	margin: auto;
 }
-#contact > * {
+
+#login {
+	width: 50%;
+	margin:200px auto 300px auto;
+}
+
+#contact > *, #login > * {
 	text-align: center;
 
 }
-#contact h2{
+
+#contact h2, #login h2 {
 	margin-bottom: 20px;
 }
-#contact form {
+
+#contact form, #login form {
 	text-align: left;
 	margin-top:30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+#contact input, #login input {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+
+#contact label, #login label {
 	margin: 2em 0 1em 0;
 }
-#contact textarea {
+
+#contact textarea, #login textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
@@ -183,7 +225,8 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	align-content: center;
+	margin:15px 100px;
 }
 
 /** Filters **/
@@ -209,4 +252,10 @@ footer nav ul {
 .li_div:hover {
 	background-color: #1D6154;
 	color:white;
+}
+
+/** Login **/
+
+.bold {
+	font-weight: bold;
 }
