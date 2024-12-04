@@ -64,7 +64,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0;
+	margin: 50px 0px 0px 0px;
 	width: 110%;
 }
 
@@ -72,13 +72,13 @@ footer {
 	position:absolute;
 	left:0;
 	margin:0px;
-	width: 100vw;
+	width:100vw;
 	height:5%;
 	background-color: white;
 }
 
 section {
-	margin: 50px 0;
+	margin: 50px 80px 0px 80px;
 }
 
 a {
@@ -91,14 +91,15 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: #B1663C;
 }
 
 h1 > span {
 	font-family: 'Work Sans';
-	font-size:10px;
+	font-size:8px;
 	letter-spacing: 0.1em;
-;
+	margin-top: 5px;
+	font-weight: 100;
 }
 
 h2{
@@ -107,10 +108,16 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
+nav a {
+	text-decoration: none;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	margin-right: 100px;
 }
 
 nav li {
@@ -137,12 +144,12 @@ li:hover {
 
 #introduction img {
 	display: block;
-	width: 90%;
+	width: 88%;
 	margin: 80px 0px ;
 }
 
 #introduction article {
-	width:45%;
+	width:43%;
 }
 
 #introduction h2 {
@@ -164,24 +171,29 @@ li:hover {
 	grid-row-gap: 20px;
 }
 
+.gallery figcaption {
+	margin: 5px 0px 0px 0px;
+}
+
 .gallery img {
 	width: 100%;
 
 }
 
 #contact {
-	width: 50%;
+	width: 30%;
  	margin: auto;
+	margin-top: 50px;
 }
 
 #login {
-	width: 50%;
+	width: 35%;
 	margin:200px auto 300px auto;
 }
 
 #contact > *, #login > * {
 	text-align: center;
-
+	width:100%;
 }
 
 #contact h2, #login h2 {
@@ -196,7 +208,7 @@ li:hover {
 }
 
 #contact input, #login input {
-	height: 50px;
+	height: 40px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -208,6 +220,7 @@ li:hover {
 
 #contact textarea, #login textarea {
 	border: none;
+	resize: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
@@ -217,9 +230,9 @@ input[type="submit"]{
 	color: white;
 	background-color: #1D6154;
 	margin : 2em auto ;
-	width: 180px;
+	width: 200px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
 }
 
 footer nav ul {
