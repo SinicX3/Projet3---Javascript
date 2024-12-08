@@ -274,3 +274,7 @@ footer nav ul {
 .bold {
 	font-weight: bold;
 }
+
+#login div {
+	color: red ;
+}

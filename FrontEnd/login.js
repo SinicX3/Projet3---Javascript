@@ -1,20 +1,6 @@
 // On écoute le bouton "Se connecter"
 const login_btn = document.querySelector("input[type='submit']");
 
-// Y a-t-il un token d'authentification valide ?
-async function auth_token() {
-    const token = window.localStorage.getItem("token");
-    const req = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMzQzMjU1MSwiZXhwIjoxNzMzNTE4OTUxfQ.QxwWSe7uZCqNolIpPQo9QzWDQk99Ii-LOjHHV0zE9K4`,
-        },
-    });
-    console.log(token);
-    console.log(req);
-}
-
 // Sinon, au clic, récupération des identifiants entrés par l'utilisateur
 function auth_usr() {
     login_btn.addEventListener("click", (event) =>{
@@ -42,11 +28,58 @@ async function auth_server (body_usr) {
     if (req.ok) {
         window.localStorage.removeItem("token");
         window.localStorage.setItem("token", reponse.token);
-        console.log(reponse.token);
     } else {
-        console.log ("Y a eu un problème !");
+        Error_Message (req.status);
     }
 }
 
-auth_token();
+// Ajout du message d'erreur en cas de problème
+function Error_Message (reponse) {
+    const target = document.querySelector("#login h2");
+    let div_message = document.createElement ("div");
+    let message = "";
+
+    switch (reponse) {
+        case 400:
+            message = "Votre upload ne respecte pas le format demandé"
+            break;
+        case 401:
+            message = "Vos identifiants sont incorrects"
+            break;
+        case 500:
+            message = "La base de données a rencontré un problème"
+            break;
+        default:
+            message = "Une erreur inconnue est survenue"
+    }
+
+    div_message.innerText = message;
+    target.insertAdjacentElement("afterend", div_message);
+}
+
+// Ajout d'une nouvelle référence
+async function AddObj() {
+    const token = window.localStorage.getItem("token");
+    const body = {
+        "id": 0,
+        "title": "string",
+        "image": "string",
+        "category": 1,
+        "userId": 0
+   }
+
+    const req = await fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        // La nouvelle image à ajouter
+         body: JSON.stringify(body)
+    });
+
+    if (!req.ok) {Error_Message (req.status);}
+}
+
 auth_usr();
+//AddObj();

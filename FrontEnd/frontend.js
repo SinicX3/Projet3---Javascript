@@ -1,6 +1,8 @@
 const req_works = await fetch("http://localhost:5678/api/works/");
 const travaux = await req_works.json();
 
+console.log(travaux);
+
 // Génération/ajout de la galerie
 function GenGallery () {
 
