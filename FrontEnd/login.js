@@ -27,7 +27,9 @@ async function auth_server (body_usr) {
 
     if (req.ok) {
         window.localStorage.removeItem("token");
-        window.localStorage.setItem("token", reponse.token);
+        window.localStorage.setItem("token", reponse.token);       // Stockage du token, puis redirection vers index.html
+        window.location.href = "index.html";
+
     } else {
         Error_Message (req.status);
     }

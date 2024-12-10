@@ -1,8 +1,6 @@
 const req_works = await fetch("http://localhost:5678/api/works/");
 const travaux = await req_works.json();
 
-console.log(travaux);
-
 // Génération/ajout de la galerie
 function GenGallery () {
 
@@ -43,7 +41,6 @@ function AddFilters (l_filters) {
     let ul_filter = document.createElement("div");
     ul_filter.className="ul_div";
     filters.insertAdjacentElement("afterend", ul_filter);
-
     let filter = document.querySelector(".ul_div");
 
     for (let i=0 ; i<l_filters.length ; i++) {
@@ -81,6 +78,95 @@ function FilterGallery () {
     }
 }
 
-GenGallery();
-AddFilters(filters());
-FilterGallery();
+//Modifications d'index.html si l'utilisateur est connecté
+function modif_page() {
+
+    //Ajout du bloc noir avant le header
+    let target = document.querySelector("header"); 
+    const div = document.createElement("div");
+    div.className = "bloc_edit"
+
+    div.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> Mode édition`;
+    target.style.padding = "100px";             // Ajustement du header
+    target.insertAdjacentElement("beforebegin", div);
+
+    //Remplacement de "login" par "logout"
+    target = document.querySelectorAll('li')[2];
+    target.innerText = "logout"
+
+    //Ajout du bouton "Modifier"
+    target = document.querySelector("#portfolio h2");
+    const div2 = document.createElement("div");
+    div2.className = "modif_btn";
+    div2.id = "btn_modale";
+    div2.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> modifier`;
+    target.insertAdjacentElement("afterend", div2);
+}
+
+    //Ajout de la modale
+function AddModale(){
+
+    let target = document.getElementById("contact");
+    const div = document.createElement("div");
+    div.className = "modale";
+
+    const innerDiv = document.createElement("div");
+    innerDiv.className = "contenu_modale";
+
+    const span = document.createElement("span");
+    span.className = "close-btn";
+    span.id = "btn_fermer_modale";
+    span.innerText = "X";
+    const p = document.createElement("p");
+    p.innerText = "Galerie photo";
+
+//        gallery_modale = GenModaleGallery (); // Génération de la gallerie pour la modale
+
+    innerDiv.appendChild(span);
+    innerDiv.appendChild(p);
+    div.appendChild(innerDiv);
+    target.insertAdjacentElement("afterend", div);
+}
+
+    //Ouverture/fermeture de la modale
+function Modale(){
+    const ouvrir_modale = document.getElementById("btn_modale");
+    const modale = document.querySelector(".modale");
+    const fermer_modale = document.getElementById("btn_fermer_modale");
+
+    ouvrir_modale.addEventListener("click", function() {
+    modale.style.display = "flex";
+    });
+
+    fermer_modale.addEventListener("click", function() {
+    modale.style.display = "none";
+    });
+
+    window.addEventListener("click", function(event) {
+        if (event.target === modale) {
+            modale.style.display = "none";
+        }
+    })
+} 
+
+
+
+
+
+/////****  Lancement des fonctions ****/////
+
+// On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
+// window.localStorage.removeItem("token");
+let token = window.localStorage.getItem("token");
+
+if (token != null) {
+    modif_page();
+    GenGallery();
+    AddModale();
+    Modale();
+}
+else {
+    GenGallery();
+    AddFilters(filters());
+    FilterGallery();
+};
