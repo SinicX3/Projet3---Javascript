@@ -209,7 +209,7 @@ li:hover {
 	flex-direction: column;
 }
 
-#contact input, #login input {
+#contact input, #login input, .modale input {
 	height: 40px;
 	font-size: 1.2em;
 	border: none;
@@ -242,6 +242,10 @@ footer nav ul {
 	justify-content: flex-end;
 	align-content: center;
 	margin:15px 100px;
+}
+
+.li_div, nav li, input[type="submit"] {
+	cursor:pointer;
 }
 
 /** Filters **/
@@ -320,7 +324,7 @@ footer nav ul {
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 15px;
-	width: 300px;
+	max-width: 600px;
 	text-align: center;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
@@ -330,7 +334,49 @@ footer nav ul {
 	color: black;
 	font-size: 20px;
 	font-weight: bold;
-	bottom: 100px;
-	left: 20px;
-	cursor: pointer;
+	left:270px;
+	top:10px;
+  }
+
+  .modale img {
+		width: 100%;
+  }
+
+  .modale p {
+	font-size: 25px;
+	padding-top: 10px;
+  }
+
+  .modale hr {
+	width:77%;
+	color: rgb(241, 241, 241);
+  }
+
+  .modale input {
+	width:45%;
+  }
+
+  .galerie_modale {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+	margin:40px 70px 50px 70px;
+  }
+
+  .corbeille {
+	background-color: black;
+	position: relative;
+	border-radius: 3px;
+	bottom:110px;
+	left: 60px;
+	width: 18px;
+	height: 18px;
+  }
+
+  .corbeille i {
+	color: white;
+	font-size: 10px;
+	text-align: center;
+	padding-top: 3px;
   }

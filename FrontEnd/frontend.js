@@ -1,10 +1,10 @@
 const req_works = await fetch("http://localhost:5678/api/works/");
 const travaux = await req_works.json();
 
-// Génération/ajout de la galerie
-function GenGallery () {
+    // Génération/ajout de la galerie
+function GenGallery (target) {
 
-    let gallery = document.querySelector(".gallery");
+    let gallery = document.querySelector(target);
     gallery.innerHTML = "";
 
     for (let i=0 ; i<travaux.length ; i++) {
@@ -19,9 +19,10 @@ function GenGallery () {
         
         gallery.appendChild(n_work);
     }
+    
 }
 
-// Génération de la liste des filtres
+    // Génération de la liste des filtres
 function filters () {
     let l_filters = ["Tous"];
 
@@ -34,7 +35,7 @@ function filters () {
     return l_filters;
 }
 
-// Ajout des filtres au DOM
+    // Ajout des filtres au DOM
 function AddFilters (l_filters) {
     let filters = document.querySelector("#portfolio h2");
 
@@ -51,7 +52,7 @@ function AddFilters (l_filters) {
     }
 }
 
-// Tri des images selon le filtre
+    // Tri des images selon le filtre
 function FilterGallery () {
     let filterEvent = document.querySelectorAll(".li_div");
     let gallery = document.querySelector(".gallery");
@@ -78,7 +79,7 @@ function FilterGallery () {
     }
 }
 
-//Modifications d'index.html si l'utilisateur est connecté
+    //Modifications d'index.html si l'utilisateur est connecté
 function modif_page() {
 
     //Ajout du bloc noir avant le header
@@ -87,12 +88,8 @@ function modif_page() {
     div.className = "bloc_edit"
 
     div.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> Mode édition`;
-    target.style.padding = "100px";             // Ajustement du header
+    target.style.padding = "100px";                                 // Ajustement du header
     target.insertAdjacentElement("beforebegin", div);
-
-    //Remplacement de "login" par "logout"
-    target = document.querySelectorAll('li')[2];
-    target.innerText = "logout"
 
     //Ajout du bouton "Modifier"
     target = document.querySelector("#portfolio h2");
@@ -101,11 +98,45 @@ function modif_page() {
     div2.id = "btn_modale";
     div2.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> modifier`;
     target.insertAdjacentElement("afterend", div2);
+
+    //Remplacement de "login" par "logout"
+    target = document.querySelectorAll('li')[2];
+    target.innerText = "logout"
+    target.addEventListener("click", () => {                        // Si on clique sur "logout", on supprime le token et on recharge la page
+        window.localStorage.removeItem("token");                    //
+        window.location.href = "index.html";                        //
+    });                                                             //
+}
+
+    //Génération de la galerie pour la modale
+function GenGalleryModale(target) {
+
+    const galerie_modale = document.createElement("div");
+    galerie_modale.className = "galerie_modale";
+    for (let i=0 ; i<travaux.length ; i++) {
+        const n_work = document.createElement ("figure");
+
+        const work_container = document.createElement ("div");
+        const work_img = document.createElement ("img");
+        work_img.src = travaux[i].imageUrl;        
+        const corbeille = document.createElement ("div");
+        corbeille.className = "corbeille";
+        corbeille.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+        work_container.appendChild(work_img);
+        work_container.appendChild(corbeille);
+        n_work.appendChild(work_container);
+        
+        galerie_modale.appendChild(n_work);
+    }
+    
+    target.appendChild(galerie_modale);
 }
 
     //Ajout de la modale
 function AddModale(){
 
+    // Création des éléments de la modale
     let target = document.getElementById("contact");
     const div = document.createElement("div");
     div.className = "modale";
@@ -120,25 +151,34 @@ function AddModale(){
     const p = document.createElement("p");
     p.innerText = "Galerie photo";
 
-//        gallery_modale = GenModaleGallery (); // Génération de la gallerie pour la modale
+    const bar = document.createElement("hr");
+    const input = document.createElement("input");
+    input.type = "submit";
+    input.value = "Ajouter une photo";
 
+    // Ajout des éléments à la modale
     innerDiv.appendChild(span);
     innerDiv.appendChild(p);
+    GenGalleryModale(innerDiv);             // Génération et ajout de la galerie
+    innerDiv.appendChild(bar);
+    innerDiv.appendChild(input);
     div.appendChild(innerDiv);
+
     target.insertAdjacentElement("afterend", div);
 }
 
-    //Ouverture/fermeture de la modale
+    // Ouverture/fermeture de la modale
 function Modale(){
     const ouvrir_modale = document.getElementById("btn_modale");
     const modale = document.querySelector(".modale");
     const fermer_modale = document.getElementById("btn_fermer_modale");
+    const btn_ajout_photo = document.querySelector(".contenu_modale input");
 
-    ouvrir_modale.addEventListener("click", function() {
-    modale.style.display = "flex";
+    ouvrir_modale.addEventListener("click", () => {
+    modale.style.display = "grid";
     });
 
-    fermer_modale.addEventListener("click", function() {
+    fermer_modale.addEventListener("click", () => {
     modale.style.display = "none";
     });
 
@@ -146,7 +186,49 @@ function Modale(){
         if (event.target === modale) {
             modale.style.display = "none";
         }
-    })
+    });
+
+    btn_ajout_photo.addEventListener("click", () => {
+
+        // Deuxième modale (ajout photo)
+        const target = document.querySelector(".contenu_modale");
+        target.innerHTML="";
+
+        const p = document.createElement("p");
+        p.innerText = "Ajout photo";
+        target.appendChild(p);
+
+        const form = document.createElement("form");                                                // Liste trop longue, à remplacer par un object.assign
+        form.action = "#";
+        form.method = "post";
+        const label_f = document.createElement("label");
+        label_f.for = "file"
+        label_f.innerText = "Fichier";
+        const input_f = document.createElement("input");
+        input_f.type = "file";
+        input_f.name = "photo";
+        input_f.id = "photo";
+        const label_t = document.createElement("label");
+        label_f.for = "Titre"
+        label_f.innerText = "Titre";
+        const input_t = document.createElement("input");
+        input_t.type = "text";
+        input_t.name = "titre";
+        input_t.id = "titre";
+
+        form.appendChild(label_f);                                                                  // Idem, itérer avec un ForEach
+        form.appendChild(input_f);
+        form.appendChild(label_t);
+        form.appendChild(input_t);
+        target.appendChild(form);
+
+        const bar = document.createElement("hr");
+        const input = document.createElement("input");
+        input.type = "submit";
+        input.value = "Ajouter une photo";
+        target.appendChild(bar);
+        target.appendChild(input);
+    });
 } 
 
 
@@ -156,17 +238,16 @@ function Modale(){
 /////****  Lancement des fonctions ****/////
 
 // On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
-// window.localStorage.removeItem("token");
 let token = window.localStorage.getItem("token");
 
 if (token != null) {
     modif_page();
-    GenGallery();
+    GenGallery(".gallery");
     AddModale();
     Modale();
 }
 else {
-    GenGallery();
+    GenGallery(".gallery");
     AddFilters(filters());
     FilterGallery();
 };
