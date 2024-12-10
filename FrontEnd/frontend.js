@@ -2,9 +2,9 @@ const req_works = await fetch("http://localhost:5678/api/works/");
 const travaux = await req_works.json();
 
 // Génération/ajout de la galerie
-function GenGallery () {
+function GenGallery (target) {
 
-    let gallery = document.querySelector(".gallery");
+    let gallery = document.querySelector(target);
     gallery.innerHTML = "";
 
     for (let i=0 ; i<travaux.length ; i++) {
@@ -19,6 +19,7 @@ function GenGallery () {
         
         gallery.appendChild(n_work);
     }
+    
 }
 
 // Génération de la liste des filtres
@@ -106,6 +107,7 @@ function modif_page() {
     //Ajout de la modale
 function AddModale(){
 
+    // Création des éléments de la modale
     let target = document.getElementById("contact");
     const div = document.createElement("div");
     div.className = "modale";
@@ -120,11 +122,40 @@ function AddModale(){
     const p = document.createElement("p");
     p.innerText = "Galerie photo";
 
-//        gallery_modale = GenModaleGallery (); // Génération de la gallerie pour la modale
+    const bar = document.createElement("hr");
 
+    //Génération de la galerie pour la modale
+    const galerie_modale = document.createElement("div");
+    galerie_modale.className = "galerie_modale";
+    for (let i=0 ; i<travaux.length ; i++) {
+        const n_work = document.createElement ("figure");
+
+        const work_container = document.createElement ("div");
+        const work_img = document.createElement ("img");
+        work_img.src = travaux[i].imageUrl;        
+        const corbeille = document.createElement ("div");
+        corbeille.className = "corbeille";
+        corbeille.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+        work_container.appendChild(work_img);
+        work_container.appendChild(corbeille);
+        n_work.appendChild(work_container);
+        
+        galerie_modale.appendChild(n_work);
+    }
+    
+    const input = document.createElement("input");
+    input.type = "submit";
+    input.value = "Ajouter une photo";
+
+    // Ajout des éléments à la modale
     innerDiv.appendChild(span);
     innerDiv.appendChild(p);
+    innerDiv.appendChild(galerie_modale);
+    innerDiv.appendChild(bar);
+    innerDiv.appendChild(input);
     div.appendChild(innerDiv);
+
     target.insertAdjacentElement("afterend", div);
 }
 
@@ -135,7 +166,7 @@ function Modale(){
     const fermer_modale = document.getElementById("btn_fermer_modale");
 
     ouvrir_modale.addEventListener("click", function() {
-    modale.style.display = "flex";
+    modale.style.display = "grid";
     });
 
     fermer_modale.addEventListener("click", function() {
@@ -161,12 +192,12 @@ let token = window.localStorage.getItem("token");
 
 if (token != null) {
     modif_page();
-    GenGallery();
+    GenGallery(".gallery");
     AddModale();
     Modale();
 }
 else {
-    GenGallery();
+    GenGallery(".gallery");
     AddFilters(filters());
     FilterGallery();
 };
