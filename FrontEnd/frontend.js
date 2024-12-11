@@ -145,7 +145,7 @@ function AddModale(){
     innerDiv.className = "contenu_modale";
 
     const span = document.createElement("span");
-    span.className = "close-btn";
+    span.className = "btn_fermer";
     span.id = "btn_fermer_modale";
     span.innerText = "X";
     const p = document.createElement("p");
