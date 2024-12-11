@@ -19,7 +19,7 @@ function GenGallery (target) {
         
         gallery.appendChild(n_work);
     }
-    
+     
 }
 
     // Génération de la liste des filtres
