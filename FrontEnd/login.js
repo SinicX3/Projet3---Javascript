@@ -62,12 +62,11 @@ function Error_Message (reponse) {
 // Ajout d'une nouvelle référence
 async function AddObj() {
     const token = window.localStorage.getItem("token");
+    console.log(token);
     const body = {
-        "id": 0,
+        "image": "imageURL",
         "title": "string",
-        "image": "string",
         "category": 1,
-        "userId": 0
    }
 
     const req = await fetch("http://localhost:5678/api/works", {
@@ -81,6 +80,7 @@ async function AddObj() {
     });
 
     if (!req.ok) {Error_Message (req.status);}
+    console.log("Bonjour");
 }
 
 auth_usr();

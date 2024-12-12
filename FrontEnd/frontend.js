@@ -58,7 +58,7 @@ function FilterGallery () {
     let gallery = document.querySelector(".gallery");
 
     for (let i=0 ; i<filterEvent.length ; i++) {
-        filterEvent[i].addEventListener("click", event => {
+        filterEvent[i].addEventListener("click", () => {
             gallery.innerHTML = "";
             for (let j=0 ; j<travaux.length ; j++) {
                 if (filterEvent[i].outerText === travaux[j].category.name) {
@@ -73,7 +73,7 @@ function FilterGallery () {
     
                     gallery.appendChild(n_work)
                 }
-                else if (filterEvent[i].outerText === "Tous") (GenGallery()) 
+                else if (filterEvent[i].outerText === "Tous") (GenGallery(".gallery")) 
             }
         });
     }
@@ -128,9 +128,32 @@ function GenGalleryModale(target) {
         n_work.appendChild(work_container);
         
         galerie_modale.appendChild(n_work);
+    
+        corbeille.addEventListener("click", () => {
+             RemoveObj(travaux[i].id);
+        });
     }
     
     target.appendChild(galerie_modale);
+}
+
+    // Suppression d'une image
+async function RemoveObj(imageId) {
+
+    const token = window.localStorage.getItem("token");
+
+    const req = await fetch(`http://localhost:5678/api/works/${imageId}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+    });
+    
+    if (req_status === 204) {
+        const target = document.querySelector(".contenu_modale");
+        GenGalleryModale(target);
+    }
 }
 
     //Ajout de la modale
@@ -166,6 +189,48 @@ function AddModale(){
 
     target.insertAdjacentElement("afterend", div);
 }
+    
+    // Deuxième modale (ajout photo)
+function AddPhotoModale(){
+    
+    const target = document.querySelector(".contenu_modale");
+    target.innerHTML="";
+
+    const p = document.createElement("p");
+    p.innerText = "Ajout photo";
+    target.appendChild(p);
+
+    const form = Object.assign(document.createElement("form"), {className: "modale2", action: "#", method: "post"});                    
+    const input_f = Object.assign(document.createElement("input"), {type: "file", name: "photo", id: "photo"});         
+    const label_t = Object.assign(document.createElement("label"), {for: "Titre", innerText: "Titre"});         
+    const input_t = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
+    const label_c = Object.assign(document.createElement("label"), {for: "category", innerText: "Catégorie"});   
+    const input_c = Object.assign(document.createElement("input"), {type: "text", name: "category", id: "catégorie"});
+
+    const span_btn = Object.assign(document.createElement("span"), {className: "btn_fermer", id: "btn_fermer_modale", innerText: "X"});
+    const fleche = Object.assign(document.createElement("span"), {className: "fleche", id: "btn_fleche", innerHTML: `<i class="fa-solid fa-arrow-left"></i>`});
+
+    [fleche, span_btn, input_f, label_t, input_t, label_c, input_c].forEach(Element => form.appendChild(Element));
+
+    target.appendChild(form);
+
+    const retour = document.querySelector(".fleche");
+    retour.addEventListener("click", () => {
+        const innerDiv = document.querySelector(".modale");
+        innerDiv.remove();
+        AddModale();
+        Modale();
+        const modale = document.querySelector(".modale");
+        modale.style.display = "grid";
+    });
+
+    const bar = document.createElement("hr");
+    const input = document.createElement("input");
+    input.type = "submit";
+    input.value = "Ajouter une photo";
+    target.appendChild(bar);
+    target.appendChild(input);
+}
 
     // Ouverture/fermeture de la modale
 function Modale(){
@@ -175,11 +240,11 @@ function Modale(){
     const btn_ajout_photo = document.querySelector(".contenu_modale input");
 
     ouvrir_modale.addEventListener("click", () => {
-    modale.style.display = "grid";
+        modale.style.display = "grid";
     });
 
     fermer_modale.addEventListener("click", () => {
-    modale.style.display = "none";
+        modale.style.display = "none";
     });
 
     window.addEventListener("click", function(event) {
@@ -189,45 +254,7 @@ function Modale(){
     });
 
     btn_ajout_photo.addEventListener("click", () => {
-
-        // Deuxième modale (ajout photo)
-        const target = document.querySelector(".contenu_modale");
-        target.innerHTML="";
-
-        const p = document.createElement("p");
-        p.innerText = "Ajout photo";
-        target.appendChild(p);
-
-        const form = document.createElement("form");                                                // Liste trop longue, à remplacer par un object.assign
-        form.action = "#";
-        form.method = "post";
-        const label_f = document.createElement("label");
-        label_f.for = "file"
-        label_f.innerText = "Fichier";
-        const input_f = document.createElement("input");
-        input_f.type = "file";
-        input_f.name = "photo";
-        input_f.id = "photo";
-        const label_t = document.createElement("label");
-        label_f.for = "Titre"
-        label_f.innerText = "Titre";
-        const input_t = document.createElement("input");
-        input_t.type = "text";
-        input_t.name = "titre";
-        input_t.id = "titre";
-
-        form.appendChild(label_f);                                                                  // Idem, itérer avec un ForEach
-        form.appendChild(input_f);
-        form.appendChild(label_t);
-        form.appendChild(input_t);
-        target.appendChild(form);
-
-        const bar = document.createElement("hr");
-        const input = document.createElement("input");
-        input.type = "submit";
-        input.value = "Ajouter une photo";
-        target.appendChild(bar);
-        target.appendChild(input);
+        AddPhotoModale();
     });
 } 
 
@@ -235,7 +262,7 @@ function Modale(){
 
 
 
-/////****  Lancement des fonctions ****/////
+/////****  Lancement des fonctions  ****/////
 
 // On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
 let token = window.localStorage.getItem("token");

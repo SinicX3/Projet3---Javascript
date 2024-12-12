@@ -244,7 +244,7 @@ footer nav ul {
 	margin:15px 100px;
 }
 
-.li_div, nav li, input[type="submit"] {
+.li_div, nav li, input[type="submit"], .fleche {
 	cursor:pointer;
 }
 
@@ -324,11 +324,11 @@ footer nav ul {
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 15px;
-	max-width: 600px;
+	width: 600px;
 	text-align: center;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
-  
+
   .btn_fermer {
 	position: relative;
 	color: black;
@@ -380,4 +380,19 @@ footer nav ul {
 	font-size: 10px;
 	text-align: center;
 	padding-top: 3px;
+  }
+
+  .contenu_modale form {
+	display: flex;
+	flex-direction: column;
+	align-items: center ;
+	margin:40px 0px 40px 0px;
+  }
+  
+  .modale2 label {
+	padding: 20px 0px 10px 0px;
+  }
+
+  .modale2 input {
+	width: 77%;
   }
