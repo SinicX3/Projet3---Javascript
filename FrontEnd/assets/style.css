@@ -244,7 +244,7 @@ footer nav ul {
 	margin:15px 100px;
 }
 
-.li_div, nav li, input[type="submit"], .fleche {
+.li_div, nav li, input[type="submit"], .fleche, .modif_btn {
 	cursor:pointer;
 }
 
@@ -314,7 +314,7 @@ footer nav ul {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.7);  
+	background-color: rgba(0, 0, 0, 0.3);  
 	z-index: 1000; 
 	justify-content: center;
 	align-items: center;
@@ -330,17 +330,25 @@ footer nav ul {
   }
 
   .btn_fermer {
-	position: relative;
 	color: black;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
-	left:270px;
-	top:10px;
 	cursor: pointer;
   }
 
+  .entete_1 {
+	display: flex;
+	justify-content: flex-end;
+  }
+
+  .entete_2 {
+	display: flex;
+	justify-content: space-between;
+	margin : 5px 10px 0px 10px;
+  }
+
   .modale img {
-		width: 100%;
+	width: 100%;
   }
 
   .modale p {
@@ -385,14 +393,57 @@ footer nav ul {
   .contenu_modale form {
 	display: flex;
 	flex-direction: column;
-	align-items: center ;
-	margin:40px 0px 40px 0px;
+	align-items: center;
+	margin: 40px 0px 40px 0px;
   }
   
   .modale2 label {
 	padding: 20px 0px 10px 0px;
+	width:77%;
+	text-align: left;
   }
 
   .modale2 input {
 	width: 77%;
+  }
+
+  .fleche {
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+  }
+
+  /** Modale : champ d'ajout d'image **/
+
+  .ajout_img {
+	display: flex;
+	flex-direction: column;
+	background-color: #e0edef;
+	width:77%;
+	margin-bottom: 10px;
+  }
+
+  .ajout_img span {
+	color: #75757554;
+	font-size: 70px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px 0px 10px 0px;
+  }
+
+  .ajout_img input {
+	width: 50%;
+	background-color: #9b9b9b54;
+	color: rgb(16, 79, 161);
+	margin:auto;
+	font: inherit;
+	box-shadow: none;
+	width:40%;
+  }
+
+  .ajout_img p {
+	font-size: 10px;
+	padding-bottom: 20px;
   }

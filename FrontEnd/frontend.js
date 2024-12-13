@@ -79,7 +79,7 @@ function FilterGallery () {
     }
 }
 
-    //Modifications d'index.html si l'utilisateur est connecté
+    // Modifications d'index.html si l'utilisateur est connecté
 function modif_page() {
 
     //Ajout du bloc noir avant le header
@@ -103,12 +103,12 @@ function modif_page() {
     target = document.querySelectorAll('li')[2];
     target.innerText = "logout"
     target.addEventListener("click", () => {                        // Si on clique sur "logout", on supprime le token et on recharge la page
-        window.localStorage.removeItem("token");                    //
-        window.location.href = "index.html";                        //
-    });                                                             //
+        window.localStorage.removeItem("token");                    
+        window.location.href = "index.html";                        
+    });                                                             
 }
 
-    //Génération de la galerie pour la modale
+    // Génération de la galerie pour la modale
 function GenGalleryModale(target) {
 
     const galerie_modale = document.createElement("div");
@@ -150,14 +150,14 @@ async function RemoveObj(imageId) {
         },
     });
     
-    if (req_status === 204) {
+    if (req.status === 204) {
         const target = document.querySelector(".contenu_modale");
         GenGalleryModale(target);
     }
 }
 
-    //Ajout de la modale
-function AddModale(){
+    // Ajout de la modale
+function AddModale() {
 
     // Création des éléments de la modale
     let target = document.getElementById("contact");
@@ -167,10 +167,12 @@ function AddModale(){
     const innerDiv = document.createElement("div");
     innerDiv.className = "contenu_modale";
 
+    const div_btn = document.createElement("div");
     const span = document.createElement("span");
+    div_btn.className = "entete_1";
     span.className = "btn_fermer";
-    span.id = "btn_fermer_modale";
-    span.innerText = "X";
+    span.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+    div_btn.appendChild(span);
     const p = document.createElement("p");
     p.innerText = "Galerie photo";
 
@@ -180,7 +182,7 @@ function AddModale(){
     input.value = "Ajouter une photo";
 
     // Ajout des éléments à la modale
-    innerDiv.appendChild(span);
+    innerDiv.appendChild(div_btn);
     innerDiv.appendChild(p);
     GenGalleryModale(innerDiv);             // Génération et ajout de la galerie
     innerDiv.appendChild(bar);
@@ -189,28 +191,47 @@ function AddModale(){
 
     target.insertAdjacentElement("afterend", div);
 }
-    
+
+    // Construction de la div d'image pour la seconde modale
+function DivImage() {
+    const div = document.createElement("div");
+    div.className = "ajout_img";
+
+    const btn_ajoutImage = Object.assign(document.createElement("input"), {type: "submit", value: "+ Ajouter photo", name: "photo", id: "photo"});
+    const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
+    const text = Object.assign(document.createElement("p"), {innerText: "jpg, png : 4mo max"});
+    [img, btn_ajoutImage, text].forEach(e => div.appendChild(e));
+
+    return div;
+}
+
     // Deuxième modale (ajout photo)
 function AddPhotoModale(){
     
     const target = document.querySelector(".contenu_modale");
     target.innerHTML="";
 
+    const div_entete = document.createElement("div");
+    div_entete.className = "entete_2";
+    const span_btn = Object.assign(document.createElement("span"), {className: "btn_fermer", innerHTML: `<i class="fa-solid fa-xmark"></i>`});
+    const fleche = Object.assign(document.createElement("span"), {className: "fleche", id: "btn_fleche", innerHTML: `<i class="fa-solid fa-arrow-left"></i>`});
+    div_entete.appendChild(fleche);
+    div_entete.appendChild(span_btn);
+
+    target.appendChild(div_entete);
+
     const p = document.createElement("p");
     p.innerText = "Ajout photo";
     target.appendChild(p);
-
+    
     const form = Object.assign(document.createElement("form"), {className: "modale2", action: "#", method: "post"});                    
-    const input_f = Object.assign(document.createElement("input"), {type: "file", name: "photo", id: "photo"});         
+    const input_f = DivImage();   
     const label_t = Object.assign(document.createElement("label"), {for: "Titre", innerText: "Titre"});         
     const input_t = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
     const label_c = Object.assign(document.createElement("label"), {for: "category", innerText: "Catégorie"});   
     const input_c = Object.assign(document.createElement("input"), {type: "text", name: "category", id: "catégorie"});
 
-    const span_btn = Object.assign(document.createElement("span"), {className: "btn_fermer", id: "btn_fermer_modale", innerText: "X"});
-    const fleche = Object.assign(document.createElement("span"), {className: "fleche", id: "btn_fleche", innerHTML: `<i class="fa-solid fa-arrow-left"></i>`});
-
-    [fleche, span_btn, input_f, label_t, input_t, label_c, input_c].forEach(Element => form.appendChild(Element));
+    [input_f, label_t, input_t, label_c, input_c].forEach(e => form.appendChild(e));
 
     target.appendChild(form);
 
@@ -227,7 +248,7 @@ function AddPhotoModale(){
     const bar = document.createElement("hr");
     const input = document.createElement("input");
     input.type = "submit";
-    input.value = "Ajouter une photo";
+    input.value = "Valider";
     target.appendChild(bar);
     target.appendChild(input);
 }
@@ -236,7 +257,7 @@ function AddPhotoModale(){
 function Modale(){
     const ouvrir_modale = document.getElementById("btn_modale");
     const modale = document.querySelector(".modale");
-    const fermer_modale = document.getElementById("btn_fermer_modale");
+    const fermer_modale = document.querySelector(".btn_fermer");
     const btn_ajout_photo = document.querySelector(".contenu_modale input");
 
     ouvrir_modale.addEventListener("click", () => {
@@ -257,6 +278,7 @@ function Modale(){
         AddPhotoModale();
     });
 } 
+
 
 
 
