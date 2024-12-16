@@ -115,22 +115,20 @@ function GenGalleryModale(target) {
     galerie_modale.className = "galerie_modale";
     for (let i=0 ; i<travaux.length ; i++) {
         const n_work = document.createElement ("figure");
-
-        const work_container = document.createElement ("div");
         const work_img = document.createElement ("img");
         work_img.src = travaux[i].imageUrl;        
         const corbeille = document.createElement ("div");
         corbeille.className = "corbeille";
         corbeille.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
-        work_container.appendChild(work_img);
-        work_container.appendChild(corbeille);
-        n_work.appendChild(work_container);
+        n_work.appendChild(corbeille);
+        n_work.appendChild(work_img);
         
         galerie_modale.appendChild(n_work);
     
         corbeille.addEventListener("click", () => {
-             RemoveObj(travaux[i].id);
+            //RemoveObj(travaux[i].id);
+            console.log(travaux[i].id);
         });
     }
     
@@ -156,7 +154,7 @@ async function RemoveObj(imageId) {
     }
 }
 
-    // Ajout de la modale
+    // Ajout de la première modale
 function AddModale() {
 
     // Création des éléments de la modale
@@ -197,12 +195,41 @@ function DivImage() {
     const div = document.createElement("div");
     div.className = "ajout_img";
 
-    const btn_ajoutImage = Object.assign(document.createElement("input"), {type: "submit", value: "+ Ajouter photo", name: "photo", id: "photo"});
+        // Construction du bouton d'upload
+    const div_ajoutImage = Object.assign(document.createElement("div"));
+    const btn_ajoutImage = Object.assign(document.createElement("input"), {type: "file", name: "photo", id: "photo"});
+    const label_btn_ajoutImage = Object.assign(document.createElement("button"), {type: "button", innerText: "+ Ajouter photo", id: "label_photo"});
+    label_btn_ajoutImage.appendChild(btn_ajoutImage);
+    div_ajoutImage.appendChild(label_btn_ajoutImage);
+
+        // Quand on appuie sur le label, c'est le bouton caché qui réagit.
+    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); 
+
     const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
     const text = Object.assign(document.createElement("p"), {innerText: "jpg, png : 4mo max"});
-    [img, btn_ajoutImage, text].forEach(e => div.appendChild(e));
+    [img, div_ajoutImage, text].forEach(e => div.appendChild(e));
 
     return div;
+}
+
+    // Récupération des données entrées par l'utilisateur pour l'ajout d'image
+function ValidationForm() {
+    const form = document.querySelector(".modale2");
+    const btn_form = document.getElementById("btn_form_img");
+    form.addEventListener("input", () => {
+        btn_form.style.backgroundColor = "#1D6154";
+    });
+    btn_form.addEventListener("click", () => {
+        const usr_form = new FormData();
+        usr_form.append("title", form[1].value);
+        usr_form.append("category", form[2].value);
+    })
+
+        // Upload de l'image et préchargement dans le formulaire
+    const img_form = document.getElementById("label_photo");
+    img_form.addEventListener("click", () => {
+        
+    });
 }
 
     // Deuxième modale (ajout photo)
@@ -224,17 +251,36 @@ function AddPhotoModale(){
     p.innerText = "Ajout photo";
     target.appendChild(p);
     
-    const form = Object.assign(document.createElement("form"), {className: "modale2", action: "#", method: "post"});                    
+    // Construction du formulaire
+    const form = Object.assign(document.createElement("form"), {className: "modale2"});                    
     const input_f = DivImage();   
     const label_t = Object.assign(document.createElement("label"), {for: "Titre", innerText: "Titre"});         
     const input_t = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
     const label_c = Object.assign(document.createElement("label"), {for: "category", innerText: "Catégorie"});   
-    const input_c = Object.assign(document.createElement("input"), {type: "text", name: "category", id: "catégorie"});
 
-    [input_f, label_t, input_t, label_c, input_c].forEach(e => form.appendChild(e));
+        // Choix possibles pour la liste des catégories
+    const input_c = Object.assign(document.createElement("select"), {name: "category", id: "catégorie"});
+    const l_filters = filters();
+    for (let i=0 ; i<l_filters.length; i++) {
+        const option = document.createElement("option");
+        option.innerHTML = l_filters[i];
+        option.value = l_filters[i];
+        if (option.value=== "Tous") {option.innerText = ""};
+        input_c.appendChild(option);
+    }
+        // Ajout de la flèche sur la liste des catégories
+    const div_input_c = document.createElement("div");
+    div_input_c.className = "div_category";
+    const fleche_cat = document.createElement("span");
+    fleche_cat.id = "cat_fleche";
+    fleche_cat.innerHTML = `<i class="fa-solid fa-chevron-down"></i>`;
+    div_input_c.appendChild(input_c);
+    div_input_c.appendChild(fleche_cat);
 
+    [input_f, label_t, input_t, label_c, div_input_c].forEach(e => form.appendChild(e));
     target.appendChild(form);
 
+    // Retour à la page précédente quand on clique sur la flèche
     const retour = document.querySelector(".fleche");
     retour.addEventListener("click", () => {
         const innerDiv = document.querySelector(".modale");
@@ -245,12 +291,22 @@ function AddPhotoModale(){
         modale.style.display = "grid";
     });
 
+    //Fermeture en cliquant sur la croix. A factoriser avec les instructions identiques dans la fonction Modale()
+    const fermer_modale = document.querySelector(".btn_fermer");
+    const modale = document.querySelector(".modale");
+    fermer_modale.addEventListener("click", () => {
+        modale.style.display = "none";
+    });
+
     const bar = document.createElement("hr");
     const input = document.createElement("input");
     input.type = "submit";
     input.value = "Valider";
+    input.id = "btn_form_img";
     target.appendChild(bar);
     target.appendChild(input);
+
+    ValidationForm();
 }
 
     // Ouverture/fermeture de la modale
