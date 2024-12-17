@@ -127,8 +127,8 @@ function GenGalleryModale(target) {
         galerie_modale.appendChild(n_work);
     
         corbeille.addEventListener("click", () => {
+            console.log("Fonction désactivée le temps d'ajout la fonction d'ajout");
             //RemoveObj(travaux[i].id);
-            console.log(travaux[i].id);
         });
     }
     
@@ -190,8 +190,9 @@ function AddModale() {
     target.insertAdjacentElement("afterend", div);
 }
 
-    // Construction de la div d'image pour la seconde modale
+    // Construction de la div d'upload d'image pour la seconde modale
 function DivImage() {
+
     const div = document.createElement("div");
     div.className = "ajout_img";
 
@@ -201,9 +202,9 @@ function DivImage() {
     const label_btn_ajoutImage = Object.assign(document.createElement("button"), {type: "button", innerText: "+ Ajouter photo", id: "label_photo"});
     label_btn_ajoutImage.appendChild(btn_ajoutImage);
     div_ajoutImage.appendChild(label_btn_ajoutImage);
-
-        // Quand on appuie sur le label, c'est le bouton caché qui réagit.
-    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); 
+    
+    btn_ajoutImage.addEventListener("change", (e) => {ChrgtImage(e.target.files[0])});
+    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); // Quand on appuie sur le label, c'est le bouton caché qui réagit.
 
     const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
     const text = Object.assign(document.createElement("p"), {innerText: "jpg, png : 4mo max"});
@@ -212,8 +213,28 @@ function DivImage() {
     return div;
 }
 
+function ChrgtImage(img) {
+
+    const target = document.querySelector(".ajout_img");
+    target.innerHTML="";
+
+    const div_wrapper = document.createElement("div"); // Cette div sert à recevoir la prévisualisation de l'image uploadée
+    div_wrapper.id = "div_wrapper";
+    const previewImg = document.createElement("img");
+
+    const image = URL.createObjectURL(img); // Génération du blob pour la prévisualisation
+    previewImg.src = image ;
+    div_wrapper.appendChild(previewImg);
+    target.appendChild(div_wrapper);
+
+    div_wrapper.style.zIndex = 1000;
+
+    ValidationForm(image);
+}
+
     // Récupération des données entrées par l'utilisateur pour l'ajout d'image
-function ValidationForm() {
+function ValidationForm(img_form) {
+    
     const form = document.querySelector(".modale2");
     const btn_form = document.getElementById("btn_form_img");
     form.addEventListener("input", () => {
@@ -221,15 +242,12 @@ function ValidationForm() {
     });
     btn_form.addEventListener("click", () => {
         const usr_form = new FormData();
-        usr_form.append("title", form[1].value);
-        usr_form.append("category", form[2].value);
+        usr_form.append("title", form[0].value);
+        usr_form.append("category", form[1].value);
+        usr_form.append("image", img_form);
+        console.log(usr_form);
     })
-
-        // Upload de l'image et préchargement dans le formulaire
-    const img_form = document.getElementById("label_photo");
-    img_form.addEventListener("click", () => {
-        
-    });
+    
 }
 
     // Deuxième modale (ajout photo)
@@ -305,8 +323,6 @@ function AddPhotoModale(){
     input.id = "btn_form_img";
     target.appendChild(bar);
     target.appendChild(input);
-
-    ValidationForm();
 }
 
     // Ouverture/fermeture de la modale

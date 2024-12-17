@@ -454,6 +454,7 @@ footer nav ul {
   .ajout_img {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	background-color: #e0edef;
 	width:77%;
 	margin-bottom: 10px;
@@ -464,7 +465,6 @@ footer nav ul {
 	font-size: 70px;
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	margin: 20px 0px 10px 0px;
   }
 
@@ -499,3 +499,9 @@ footer nav ul {
 	box-shadow: none;
 	width:40%;
   }
+
+  #div_wrapper {
+	width:40%;
+	z-index:0;
+	place-self: center;
+  } 
