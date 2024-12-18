@@ -277,6 +277,7 @@ function AddPhotoModale(){
     // Prévisualisation de l'image
 function ChrgtImage(img) {
 
+    const img_name = img.name;
     const target = document.querySelector(".ajout_img");
     target.innerHTML="";
 
@@ -290,7 +291,7 @@ function ChrgtImage(img) {
     div_wrapper.appendChild(previewImg);
     target.appendChild(div_wrapper);
 
-    ValidationForm(image);
+    ValidationForm(img_name);
 }
 
     // Construction de la div d'upload d'image pour la seconde modale
@@ -349,26 +350,22 @@ function GenForm(target) {
 }
 
     // Récupération des données entrées par l'utilisateur pour l'ajout d'image
-function ValidationForm(img_form) {
+function ValidationForm(img_name) {
     
     const form = document.querySelector(".modale2");
     const btn_form = document.getElementById("btn_form_img");
+    const userId = window.localStorage.getItem("userId");
+    console.log(userId);
     form.addEventListener("change", () => {
         btn_form.style.backgroundColor = "#1D6154";
     });
     btn_form.addEventListener("click", () => {
-        const userId = window.localStorage.getItem("userId");
-        const usr_form = new FormData();
-        const file = document.getElementById("img_id");
-        console.log(file);
-        usr_form.append("title", form[0].value);
-        usr_form.append("categoryId", form[1].value);
-        //usr_form.append("image", img_form);
-        usr_form.append("imageURL", file);
-        usr_form.append("userId", userId);
-
-        JSON.stringify(usr_form);
-        console.log(usr_form);
+        const usr_form = {
+            title: form[0].value,
+            categoryId: 1,
+            imageURL: img_name,
+            userId: userId
+        }
 
         EnvoiForm(usr_form);
         
@@ -383,7 +380,7 @@ async function EnvoiForm(usr_form) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json"
         },
-        body: usr_form
+        body: JSON.stringify(usr_form)
     });
 }
 
