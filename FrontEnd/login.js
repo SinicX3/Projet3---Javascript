@@ -30,6 +30,7 @@ async function auth_server (body_usr) {
         window.localStorage.setItem("token", reponse.token);       // Stockage du token, puis redirection vers index.html
         window.location.href = "index.html";
 
+        window.localStorage.setItem("userId", reponse.userId);
     } else {
         Error_Message (req.status);
     }

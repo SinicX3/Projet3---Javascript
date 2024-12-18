@@ -286,10 +286,9 @@ function ChrgtImage(img) {
 
     const image = URL.createObjectURL(img); // Génération du blob pour la prévisualisation
     previewImg.src = image ;
+    previewImg.id = "img_id";
     div_wrapper.appendChild(previewImg);
     target.appendChild(div_wrapper);
-
-    div_wrapper.style.zIndex = 1000;
 
     ValidationForm(image);
 }
@@ -358,13 +357,34 @@ function ValidationForm(img_form) {
         btn_form.style.backgroundColor = "#1D6154";
     });
     btn_form.addEventListener("click", () => {
+        const userId = window.localStorage.getItem("userId");
         const usr_form = new FormData();
+        const file = document.getElementById("img_id");
+        console.log(file);
         usr_form.append("title", form[0].value);
-        usr_form.append("category", form[1].value);
-        usr_form.append("image", img_form);
+        usr_form.append("categoryId", form[1].value);
+        //usr_form.append("image", img_form);
+        usr_form.append("imageURL", file);
+        usr_form.append("userId", userId);
+
+        JSON.stringify(usr_form);
         console.log(usr_form);
+
+        EnvoiForm(usr_form);
+        
     })
     
+}
+
+async function EnvoiForm(usr_form) {
+    const req = await fetch(`http://localhost:5678/api/works/`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: usr_form
+    });
 }
 
 
