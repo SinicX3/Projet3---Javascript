@@ -27,6 +27,7 @@ async function auth_server (body_usr) {
 
     if (req.ok) {
         window.localStorage.removeItem("token");
+        console.log(reponse.token);
         window.localStorage.setItem("token", reponse.token);       // Stockage du token, puis redirection vers index.html
         window.location.href = "index.html";
 
@@ -60,29 +61,4 @@ function Error_Message (reponse) {
     target.insertAdjacentElement("afterend", div_message);
 }
 
-// Ajout d'une nouvelle référence
-async function AddObj() {
-    const token = window.localStorage.getItem("token");
-    console.log(token);
-    const body = {
-        "image": "imageURL",
-        "title": "string",
-        "category": 1,
-   }
-
-    const req = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        // La nouvelle image à ajouter
-         body: JSON.stringify(body)
-    });
-
-    if (!req.ok) {Error_Message (req.status);}
-    console.log("Bonjour");
-}
-
 auth_usr();
-//AddObj();

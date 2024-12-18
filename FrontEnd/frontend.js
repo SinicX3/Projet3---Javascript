@@ -151,6 +151,7 @@ function GenGalleryModale(target) {
 
     const galerie_modale = document.createElement("div");
     galerie_modale.className = "galerie_modale";
+    galerie_modale.innerHTML = "";                          // Si une galerie est déjà affichée, on la supprime pour en refaire une autre
     for (let i=0 ; i<travaux.length ; i++) {
         const n_work = document.createElement ("figure");
         const work_img = document.createElement ("img");
@@ -165,8 +166,8 @@ function GenGalleryModale(target) {
         galerie_modale.appendChild(n_work);
     
         corbeille.addEventListener("click", () => {
-            console.log("Fonction désactivée le temps d'ajouter la fonction d'ajout");
-            //RemoveObj(travaux[i].id);
+            //console.log("Fonction désactivée le temps d'ajouter la fonction d'ajout");
+            RemoveObj(travaux[i].id);
         });
     }
     
@@ -212,8 +213,10 @@ async function RemoveObj(imageId) {
         },
     });
     
+    console.log(req);
+
     if (req.status === 204) {
-        const target = document.querySelector(".contenu_modale");
+        const target = document.querySelector(".galerie_modale");
         GenGalleryModale(target);
     }
 }
@@ -277,6 +280,13 @@ function AddPhotoModale(){
     // Prévisualisation de l'image
 function ChrgtImage(img) {
 
+    // const img_reader = new FileReader(); 
+    // img_reader.onload = () => {
+    //     console.log(img_reader.result); // Afficher le contenu du fichier
+    // };
+
+    // const read_img = img_reader.readAsDataURL(img);
+
     const img_name = img.name;
     const target = document.querySelector(".ajout_img");
     target.innerHTML="";
@@ -291,7 +301,7 @@ function ChrgtImage(img) {
     div_wrapper.appendChild(previewImg);
     target.appendChild(div_wrapper);
 
-    ValidationForm(img_name);
+    ValidationForm(image);
 }
 
     // Construction de la div d'upload d'image pour la seconde modale
@@ -350,12 +360,11 @@ function GenForm(target) {
 }
 
     // Récupération des données entrées par l'utilisateur pour l'ajout d'image
-function ValidationForm(img_name) {
+function ValidationForm(img) {
     
     const form = document.querySelector(".modale2");
     const btn_form = document.getElementById("btn_form_img");
     const userId = window.localStorage.getItem("userId");
-    console.log(userId);
     form.addEventListener("change", () => {
         btn_form.style.backgroundColor = "#1D6154";
     });
@@ -363,24 +372,27 @@ function ValidationForm(img_name) {
         const usr_form = {
             title: form[0].value,
             categoryId: 1,
-            imageURL: img_name,
-            userId: userId
+            imageURL: img
+            //userId: userId
         }
 
-        EnvoiForm(usr_form);
+    EnvoiForm(formData);
         
     })
     
 }
 
 async function EnvoiForm(usr_form) {
-    const req = await fetch(`http://localhost:5678/api/works/`, {
+
+    const token = window.localStorage.getItem("token");
+    const req = await fetch(`http://localhost:5678/api/works`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            //"Content-Type": "application/json"
         },
         body: JSON.stringify(usr_form)
+        
     });
 }
 
