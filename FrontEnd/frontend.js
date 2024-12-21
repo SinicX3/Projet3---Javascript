@@ -1,7 +1,6 @@
 const req_works = await fetch("http://localhost:5678/api/works/");
 const travaux = await req_works.json();
 
-
 ////*** Premiers éléments du DOM ***////
 
     // Ajout des filtres au DOM
@@ -151,7 +150,7 @@ function GenGalleryModale(target) {
 
     const galerie_modale = document.createElement("div");
     galerie_modale.className = "galerie_modale";
-    galerie_modale.innerHTML = "";                          // Si une galerie est déjà affichée, on la supprime pour en refaire une autre
+    galerie_modale.innerHTML = "";                          // Si une galerie est déjà affichée, on la supprime pour la recharger
     for (let i=0 ; i<travaux.length ; i++) {
         const n_work = document.createElement ("figure");
         const work_img = document.createElement ("img");
@@ -212,8 +211,6 @@ async function RemoveObj(imageId) {
             "Content-Type": "application/json"
         },
     });
-    
-    console.log(req);
 
     if (req.status === 204) {
         const target = document.querySelector(".galerie_modale");
@@ -229,6 +226,7 @@ function closeModale(){
         modale.style.display = "none";
     });
 } 
+
 
 
 ////*** Seconde modale ***////
@@ -280,12 +278,13 @@ function AddPhotoModale(){
     // Prévisualisation de l'image
 function ChrgtImage(img) {
 
-    // const img_reader = new FileReader(); 
-    // img_reader.onload = () => {
-    //     console.log(img_reader.result); // Afficher le contenu du fichier
-    // };
+    const img_reader = new FileReader(); 
+    img_reader.onload = () => {
+        
+        const result = img_reader.result; // Afficher le contenu du fichier
+    };
 
-    // const read_img = img_reader.readAsDataURL(img);
+    const read_img = img_reader.readAsDataURL(img);
 
     const img_name = img.name;
     const target = document.querySelector(".ajout_img");
@@ -301,7 +300,7 @@ function ChrgtImage(img) {
     div_wrapper.appendChild(previewImg);
     target.appendChild(div_wrapper);
 
-    ValidationForm(image);
+    ValidationForm(img);
 }
 
     // Construction de la div d'upload d'image pour la seconde modale
@@ -318,7 +317,7 @@ function DivImage() {
     div_ajoutImage.appendChild(label_btn_ajoutImage);
     
     btn_ajoutImage.addEventListener("change", (e) => {ChrgtImage(e.target.files[0])});
-    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); // Quand on appuie sur le label, c'est le bouton caché qui réagit.
+    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); // Quand on appuie sur le label, c'est l'input caché qui réagit.
 
     const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
     const text = Object.assign(document.createElement("p"), {innerText: "jpg, png : 4mo max"});
@@ -327,14 +326,30 @@ function DivImage() {
     return div;
 }
 
+    // Envoi de la requête à l'API
+async function EnvoiForm(usr_form) {
+
+    const token = window.localStorage.getItem("token");
+    const req = await fetch(`http://localhost:5678/api/works`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json"
+        },
+        body: usr_form
+        
+    });
+
+}
+
     // Construction du formulaire
 function GenForm(target) {
 
     const form = Object.assign(document.createElement("form"), {className: "modale2"});                    
     const input_f = DivImage();   
-    const label_t = Object.assign(document.createElement("label"), {for: "Titre", innerText: "Titre"});         
+    const label_t = Object.assign(document.createElement("label"), {for: "titre", innerText: "Titre"});        
     const input_t = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
-    const label_c = Object.assign(document.createElement("label"), {for: "category", innerText: "Catégorie"});   
+    const label_c = Object.assign(document.createElement("label"), {for: "catégorie", innerText: "Catégorie"});   
 
         // Choix possibles pour la liste des catégories
     const input_c = Object.assign(document.createElement("select"), {name: "category", id: "catégorie"});
@@ -343,9 +358,13 @@ function GenForm(target) {
         const option = document.createElement("option");
         option.innerHTML = l_filters[i];
         option.value = l_filters[i];
-        if (option.value=== "Tous") {option.innerText = ""};
+        if (option.value === "Tous"){
+            option.value = "";                                      // On retire le "Tous" parmi les choix
+            option.innerText = "";
+        }                  
         input_c.appendChild(option);
-    }
+    }                                      
+
         // Ajout de la flèche sur la liste des catégories
     const div_input_c = document.createElement("div");
     div_input_c.className = "div_category";
@@ -365,37 +384,38 @@ function ValidationForm(img) {
     const form = document.querySelector(".modale2");
     const btn_form = document.getElementById("btn_form_img");
     const userId = window.localStorage.getItem("userId");
+
+    console.log(img);
+
     form.addEventListener("change", () => {
-        btn_form.style.backgroundColor = "#1D6154";
-    });
-    btn_form.addEventListener("click", () => {
-        const usr_form = {
-            title: form[0].value,
-            categoryId: 1,
-            imageURL: img
-            //userId: userId
+
+        if (!form[0].value || !form[1].value) {
+            btn_form.style.backgroundColor = "#4d4d4d54";               // On vérifie que les champs sont tous remplis
         }
 
-    EnvoiForm(formData);
-        
-    })
-    
-}
+        if (form[0].value && form[1].value) {
+            btn_form.style.backgroundColor = "#1D6154";
 
-async function EnvoiForm(usr_form) {
+            btn_form.addEventListener("click", () => {
+                
+                console.log(form);
+                const usr_form = new FormData();
+                usr_form.append("title", form[0].value);
+                usr_form.append("categoryId", form[1].value);
+                usr_form.append("imageURL", img);
+                usr_form.append("userId", userId);
 
-    const token = window.localStorage.getItem("token");
-    const req = await fetch(`http://localhost:5678/api/works`, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            //"Content-Type": "application/json"
-        },
-        body: JSON.stringify(usr_form)
+                if (form[0].value && form[1].value) {
+                    EnvoiForm(usr_form);
+                }
+                
+            })
+        }
         
+
     });
-}
 
+}
 
 
 

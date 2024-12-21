@@ -412,7 +412,7 @@ footer nav ul {
 	text-align: left;
   }
 
-  .modale2 input, .modale2 select, .modale2 label {
+  .modale2 select, .modale2 label {
 	width: 77%;
   }
 
@@ -421,6 +421,14 @@ footer nav ul {
 	grid-template-columns: repeat(10, 1fr);
 	grid-template-rows: 1fr; 
 	width:100%;
+  }
+
+  .modale2 input {
+	width: 73%;
+  }
+
+  .modale2 input, .modale2 select {
+	padding-left:20px;
   }
 
   .modale2 select {
