@@ -340,6 +340,8 @@ async function EnvoiForm(usr_form) {
         
     });
 
+    console.log(req);
+
 }
 
     // Construction du formulaire
@@ -385,8 +387,6 @@ function ValidationForm(img) {
     const btn_form = document.getElementById("btn_form_img");
     const userId = window.localStorage.getItem("userId");
 
-    console.log(img);
-
     form.addEventListener("change", () => {
 
         if (!form[0].value || !form[1].value) {
@@ -398,13 +398,11 @@ function ValidationForm(img) {
 
             btn_form.addEventListener("click", () => {
                 
-                console.log(form);
                 const usr_form = new FormData();
                 usr_form.append("title", form[0].value);
-                usr_form.append("categoryId", form[1].value);
-                usr_form.append("imageURL", img);
-                usr_form.append("userId", userId);
-
+                usr_form.append("category", 1);
+                usr_form.append("image", img);
+                
                 if (form[0].value && form[1].value) {
                     EnvoiForm(usr_form);
                 }
