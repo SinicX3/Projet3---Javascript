@@ -407,6 +407,11 @@ footer nav ul {
 	margin: 40px 0px 40px 0px;
   }
 
+  .error {
+	font-size: 15px;
+	color: red;
+  }
+
   .modale2 label {
 	padding: 20px 0px 10px 0px;
 	text-align: left;

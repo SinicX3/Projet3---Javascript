@@ -354,8 +354,16 @@ async function EnvoiForm(usr_form) {
         
     });
 
-    console.log(req);
-
+    if (req.status === 201) {
+        const target = document.querySelector(".contenu_modale");
+        target.innerHTML = "";
+        AddPhotoModale();
+    }
+    else {
+        const target = document.querySelector(".contenu_modale hr");
+        const error = Object.assign(document.createElement("div"), {innerText: "Une erreur est survenue", className: "error"})
+        target.insertAdjacentElement("beforebegin", error);
+    }
 }
 
     // Construction du formulaire
@@ -399,7 +407,6 @@ function ValidationForm(img) {
     
     const form = document.querySelector(".modale2");
     const btn_form = document.getElementById("btn_form_img");
-    const userId = window.localStorage.getItem("userId");
 
     form.addEventListener("change", () => {
 
@@ -409,12 +416,13 @@ function ValidationForm(img) {
 
         if (form[0].value && form[1].value) {
             btn_form.style.backgroundColor = "#1D6154";
+            console.log(form[1].selectedIndex);
 
             btn_form.addEventListener("click", () => {
                 
                 const usr_form = new FormData();
                 usr_form.append("title", form[0].value);
-                usr_form.append("category", 1);
+                usr_form.append("categoryId", form[1].selectedIndex);
                 usr_form.append("image", img);
                 
                 if (form[0].value && form[1].value) {
