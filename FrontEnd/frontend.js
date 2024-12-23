@@ -1,5 +1,14 @@
-const req_works = await fetch("http://localhost:5678/api/works/");
-const travaux = await req_works.json();
+////*** Récupération des travaux ***////
+
+async function RécupTravaux () {
+
+    const req_works = await fetch("http://localhost:5678/api/works/");
+    const travaux = await req_works.json();
+
+    return travaux ;
+
+}
+
 
 ////*** Premiers éléments du DOM ***////
 
@@ -115,7 +124,7 @@ function modif_page() {
 ////*** Première modale ***////
 
     // Ajout de la première modale
-function AddModale() {
+async function AddModale() {
 
     // Création des éléments de la modale
     let target = document.getElementById("contact");
@@ -136,21 +145,23 @@ function AddModale() {
     // Ajout des éléments à la modale
     innerDiv.appendChild(div_btn);
     innerDiv.appendChild(p);
-    GenGalleryModale(innerDiv);             // Génération et ajout de la galerie
     innerDiv.appendChild(bar);
     innerDiv.appendChild(input);
     div.appendChild(innerDiv);
 
     target.insertAdjacentElement("afterend", div);
+    await GenGalleryModale();             // Génération et ajout de la galerie
     closeModale();
 }
 
     // Génération de la galerie pour la modale
-function GenGalleryModale(target) {
+async function GenGalleryModale() {
+
+    let req_works = await fetch("http://localhost:5678/api/works/");
+    let travaux = await req_works.json();
 
     const galerie_modale = document.createElement("div");
     galerie_modale.className = "galerie_modale";
-    galerie_modale.innerHTML = "";                          // Si une galerie est déjà affichée, on la supprime pour la recharger
     for (let i=0 ; i<travaux.length ; i++) {
         const n_work = document.createElement ("figure");
         const work_img = document.createElement ("img");
@@ -164,13 +175,15 @@ function GenGalleryModale(target) {
         
         galerie_modale.appendChild(n_work);
     
-        corbeille.addEventListener("click", () => {
-            //console.log("Fonction désactivée le temps d'ajouter la fonction d'ajout");
-            RemoveObj(travaux[i].id);
+        corbeille.addEventListener("click", async () => {
+            await RemoveObj(travaux[i].id);
+            await GenGalleryModale();
         });
     }
-    
-    target.appendChild(galerie_modale);
+
+    const target = document.querySelector(".contenu_modale p");
+    target.insertAdjacentElement("afterend", galerie_modale);
+    //target.appendChild(galerie_modale);
 }
 
     // Ouverture/fermeture de la modale
@@ -214,8 +227,9 @@ async function RemoveObj(imageId) {
 
     if (req.status === 204) {
         const target = document.querySelector(".galerie_modale");
-        GenGalleryModale(target);
+        target.remove();                                     // On supprime le div de la galerie pour le re-générer
     }
+
 }
     
     //Fermeture en cliquant sur la croix.
@@ -235,10 +249,10 @@ function closeModale(){
 function AddFlecheReturn() {
     
     const retour = document.querySelector(".fleche");
-    retour.addEventListener("click", () => {
+    retour.addEventListener("click", async () => {
         const innerDiv = document.querySelector(".modale");
         innerDiv.remove();
-        AddModale();
+        await AddModale();
         Modale();
         const modale = document.querySelector(".modale");
         modale.style.display = "grid";
@@ -422,13 +436,13 @@ function ValidationForm(img) {
 /////****  Lancement des fonctions  ****/////
 /////////////////////////////////////////////
 
-// On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
-let token = window.localStorage.getItem("token");
+let travaux = await RécupTravaux ();              // Première récupération des travaux
+let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
 
 if (token != null) {
     modif_page();
     GenGallery(".gallery");
-    AddModale();
+    await AddModale();
     Modale();
 }
 else {
