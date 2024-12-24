@@ -99,7 +99,7 @@ function modif_page() {
     div.className = "bloc_edit"
 
     div.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> Mode édition`;
-    target.style.padding = "100px";                                 // Le header descend de 100 px pour laisser de la place au bloc "Mode édition"
+    target.style.paddingTop = "100px";                                 // Le header descend de 100 px pour laisser de la place au bloc "Mode édition"
     target.insertAdjacentElement("beforebegin", div);
 
     //Ajout du bouton "Modifier"
@@ -228,6 +228,8 @@ async function RemoveObj(imageId) {
     if (req.status === 204) {
         const target = document.querySelector(".galerie_modale");
         target.remove();                                     // On supprime le div de la galerie pour le re-générer
+        travaux = await RécupTravaux ();                     
+        GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
 
 }
@@ -292,15 +294,6 @@ function AddPhotoModale(){
     // Prévisualisation de l'image
 function ChrgtImage(img) {
 
-    const img_reader = new FileReader(); 
-    img_reader.onload = () => {
-        
-        const result = img_reader.result; // Afficher le contenu du fichier
-    };
-
-    const read_img = img_reader.readAsDataURL(img);
-
-    const img_name = img.name;
     const target = document.querySelector(".ajout_img");
     target.innerHTML="";
 
@@ -330,7 +323,30 @@ function DivImage() {
     label_btn_ajoutImage.appendChild(btn_ajoutImage);
     div_ajoutImage.appendChild(label_btn_ajoutImage);
     
-    btn_ajoutImage.addEventListener("change", (e) => {ChrgtImage(e.target.files[0])});
+    btn_ajoutImage.addEventListener("change", (e) => {
+
+        if (e.target.files[0].size > 4000000){
+            const target = document.querySelector(".error");
+            if (target) {target.remove()};    
+            MsgError("l'image est trop grande");
+        }
+        else {
+            switch (e.target.files[0].type){
+                case "image/jpeg":
+                case "image/jpg":
+                case "image/png":
+                case "image/webp":
+                    const target = document.querySelector(".error");
+                    if (target) {target.remove()};                                          // Si un message d'erreur est affiché, on le supprime
+                    ChrgtImage(e.target.files[0]);
+                break;
+    
+                default:
+                    MsgError("le format est incorrect");
+            }
+        }
+    });
+
     label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); // Quand on appuie sur le label, c'est l'input caché qui réagit.
 
     const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
@@ -358,11 +374,11 @@ async function EnvoiForm(usr_form) {
         const target = document.querySelector(".contenu_modale");
         target.innerHTML = "";
         AddPhotoModale();
+        travaux = await RécupTravaux ();                     
+        GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
     else {
-        const target = document.querySelector(".contenu_modale hr");
-        const error = Object.assign(document.createElement("div"), {innerText: "Une erreur est survenue", className: "error"})
-        target.insertAdjacentElement("beforebegin", error);
+        MsgError("Une erreur est survenue")
     }
 }
 
@@ -402,6 +418,12 @@ function GenForm(target) {
 
 }
 
+function MsgError (msg) {
+    const target = document.querySelector(".contenu_modale hr");
+    const error = Object.assign(document.createElement("div"), {innerText: `Erreur : ${msg}`, className: "error"})
+    target.insertAdjacentElement("beforebegin", error);
+}
+
     // Récupération des données entrées par l'utilisateur pour l'ajout d'image
 function ValidationForm(img) {
     
@@ -416,13 +438,12 @@ function ValidationForm(img) {
 
         if (form[0].value && form[1].value) {
             btn_form.style.backgroundColor = "#1D6154";
-            console.log(form[1].selectedIndex);
 
             btn_form.addEventListener("click", () => {
                 
                 const usr_form = new FormData();
                 usr_form.append("title", form[0].value);
-                usr_form.append("categoryId", form[1].selectedIndex);
+                usr_form.append("category", form[1].selectedIndex);
                 usr_form.append("image", img);
                 
                 if (form[0].value && form[1].value) {
