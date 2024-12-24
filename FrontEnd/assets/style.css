@@ -64,7 +64,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0px 0px 0px;
+	padding: 50px 0px 0px 0px;
 	width: 110%;
 }
 
@@ -209,8 +209,8 @@ li:hover {
 	flex-direction: column;
 }
 
-#contact input, #login input {
-	height: 40px;
+#contact input, #login input, .modale input, .modale select {
+	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -226,7 +226,7 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"]{
+input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -242,6 +242,10 @@ footer nav ul {
 	justify-content: flex-end;
 	align-content: center;
 	margin:15px 100px;
+}
+
+.li_div, nav li, input[type="submit"], .fleche, .modif_btn, #label_photo {
+	cursor:pointer;
 }
 
 /** Filters **/
@@ -274,3 +278,243 @@ footer nav ul {
 .bold {
 	font-weight: bold;
 }
+
+#login div {
+	color: red ;
+}
+
+/** Edit **/
+
+.bloc_edit {
+	position:absolute;
+	left:0;
+	text-align: center;
+	width: 100%;
+	background-color: black;
+	color: #fffff7;
+	font-size: 15px;
+	font-family: 'Work Sans';
+}
+
+.bloc_edit i {
+	margin:25px 5px 25px 0px ;
+}
+
+.modif_btn {
+	position:relative;
+	bottom: 52px;
+	left:63%;
+}
+
+/** Modale */
+  .modale {
+	display: none; 
+	position: fixed;  
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);  
+	z-index: 1000; 
+	justify-content: center;
+	align-items: center;
+  }
+  
+  .contenu_modale {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 15px;
+	width: 600px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn_fermer {
+	color: black;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+  }
+
+  .entete_1 {
+	display: flex;
+	justify-content: flex-end;
+  }
+
+  .entete_2 {
+	display: flex;
+	justify-content: space-between;
+	margin : 5px 10px 0px 10px;
+  }
+
+  .modale img {
+	width: 100%;
+  }
+
+  .modale p {
+	font-size: 25px;
+	padding-top: 10px;
+  }
+
+  .modale hr {
+	width:77%;
+	color: rgb(241, 241, 241);
+  }
+
+  .modale input {
+	width:45%;
+  }
+
+  .galerie_modale {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-column-gap: 10px;
+	grid-row-gap: 10px;
+	margin:40px 70px 50px 70px;
+  }
+
+  .galerie_modale figure {
+	display: grid;
+	z-index: 1;
+  }
+
+  .galerie_modale img {
+	grid-area: 1/1;
+	width: 100%;
+  }
+
+  .corbeille {
+	background-color: black;
+	grid-area: 1/1;
+	border-radius: 3px;
+	width: 18px;
+	height: 18px;
+	margin: 10% 10% 10% 70%;
+	z-index: 2;
+  }
+
+  .corbeille i {
+	color: white;
+	font-size: 10px;
+	text-align: center;
+	padding-top: 3px;
+  }
+
+  .contenu_modale form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 40px 0px 40px 0px;
+  }
+
+  .error {
+	font-size: 12px;
+	color: red;
+  }
+
+  .modale2 label {
+	padding: 20px 0px 10px 0px;
+	text-align: left;
+  }
+
+  .modale2 select, .modale2 label {
+	width: 77%;
+  }
+
+  .div_category {
+	display:grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: 1fr; 
+	width:100%;
+  }
+
+  .modale2 input {
+	width: 73%;
+  }
+
+  .modale2 input, .modale2 select {
+	padding-left:20px;
+  }
+
+  .modale2 select {
+	appearance: none;
+	grid-area: 1 / 1 / 1 / 11;
+	background-color: white;
+	place-self: center;
+  }
+
+
+   #cat_fleche {
+	grid-area: 1 / 9 / 1 / 10;
+	align-content: center;
+	font-size: 10px;
+	color: #2e2e2eb4;
+  }
+
+  input[value="Valider"] {
+	background-color: #4d4d4d54;
+  }
+
+  .fleche {
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+  }
+
+  /** Modale : champ d'ajout d'image **/
+
+  .ajout_img {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #e0edef;
+	width:77%;
+	margin-bottom: 10px;
+  }
+
+  .ajout_img span {
+	color: #75757554;
+	font-size: 70px;
+	display: flex;
+	justify-content: center;
+	margin: 20px 0px 10px 0px;
+  }
+
+  .ajout_img input {
+	width: 50%;
+	background-color: #9b9b9b54;
+	color: rgb(16, 79, 161);
+	margin:auto;
+	font: inherit;
+	box-shadow: none;
+	width:40%;
+  }
+
+  .ajout_img p {
+	font-size: 10px;
+	padding-bottom: 20px;
+  }
+
+  #photo {
+	display: none;
+  }
+
+  #label_photo {
+	border: none;
+	text-align: center;
+	border-radius: 60px;
+	background-color: #9b9b9b54;
+	color: rgb(16, 79, 161);
+	margin:auto;
+	padding: 15px 0px 15px 0px;
+	font: inherit;
+	box-shadow: none;
+	width:40%;
+  }
+
+  #div_wrapper {
+	width:40%;
+	z-index:0;
+	place-self: center;
+  } 
