@@ -1,5 +1,4 @@
 ////*** Récupération des travaux ***////
-
 async function RécupTravaux () {
 
     const req_works = await fetch("http://localhost:5678/api/works/");
@@ -341,8 +340,9 @@ function DivImage() {
                     ChrgtImage(e.target.files[0]);
                 break;
     
-                default:
+                default: 
                     MsgError("le format est incorrect");
+
             }
         }
     });
@@ -443,7 +443,7 @@ function ValidationForm(img) {
                 
                 const usr_form = new FormData();
                 usr_form.append("title", form[0].value);
-                usr_form.append("category", form[1].selectedIndex);
+                usr_form.append("categoryID", form[1].selectedIndex);
                 usr_form.append("image", img);
                 
                 if (form[0].value && form[1].value) {
@@ -461,9 +461,8 @@ function ValidationForm(img) {
 
 
 
-/////////////////////////////////////////////
+
 /////****  Lancement des fonctions  ****/////
-/////////////////////////////////////////////
 
 let travaux = await RécupTravaux ();              // Première récupération des travaux
 let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
