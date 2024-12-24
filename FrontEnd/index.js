@@ -443,7 +443,7 @@ function ValidationForm(img) {
                 
                 const usr_form = new FormData();
                 usr_form.append("title", form[0].value);
-                usr_form.append("categoryID", form[1].selectedIndex);
+                usr_form.append("category", form[1].selectedIndex);
                 usr_form.append("image", img);
                 
                 if (form[0].value && form[1].value) {
