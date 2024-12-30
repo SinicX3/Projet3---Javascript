@@ -9,6 +9,7 @@ async function RécupTravaux () {
 }
 
 
+
 ////*** Premiers éléments du DOM ***////
 
     // Ajout des filtres au DOM
@@ -321,11 +322,12 @@ function DivImage() {
     const label_btn_ajoutImage = Object.assign(document.createElement("button"), {type: "button", innerText: "+ Ajouter photo", id: "label_photo"});
     label_btn_ajoutImage.appendChild(btn_ajoutImage);
     div_ajoutImage.appendChild(label_btn_ajoutImage);
-    
+
     btn_ajoutImage.addEventListener("change", (e) => {
+        const target = document.querySelector(".error");            // Si un message d'erreur est affiché, on le supprime
+        if (target) {target.remove()};
 
         if (e.target.files[0].size > 4000000){
-            const target = document.querySelector(".error");
             if (target) {target.remove()};    
             MsgError("l'image est trop grande");
         }
@@ -335,14 +337,11 @@ function DivImage() {
                 case "image/jpg":
                 case "image/png":
                 case "image/webp":
-                    const target = document.querySelector(".error");
-                    if (target) {target.remove()};                                          // Si un message d'erreur est affiché, on le supprime
                     ChrgtImage(e.target.files[0]);
                 break;
     
                 default: 
                     MsgError("le format est incorrect");
-
             }
         }
     });
