@@ -40,6 +40,12 @@ async function auth_server (body_usr) {
 // Ajout du message d'erreur en cas de problème
 function Error_Message (reponse) {
     const target = document.querySelector("#login h2");
+    const check = document.querySelector("#login div");
+
+    if (check !== null) {
+        check.remove();
+    }
+
     let div_message = document.createElement ("div");
     let message = "";
 
