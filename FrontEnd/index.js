@@ -1,5 +1,5 @@
 ////*** Récupération des travaux ***////
-async function RécupTravaux () {
+async function RecupTravaux () {
 
     const req_works = await fetch("http://localhost:5678/api/works/");
     const travaux = await req_works.json();
@@ -157,8 +157,7 @@ async function AddModale() {
     // Génération de la galerie pour la modale
 async function GenGalleryModale() {
 
-    let req_works = await fetch("http://localhost:5678/api/works/");
-    let travaux = await req_works.json();
+    let travaux = await RecupTravaux ();
 
     const galerie_modale = document.createElement("div");
     galerie_modale.className = "galerie_modale";
@@ -228,7 +227,7 @@ async function RemoveObj(imageId) {
     if (req.status === 204) {
         const target = document.querySelector(".galerie_modale");
         target.remove();                                     // On supprime le div de la galerie pour le re-générer
-        travaux = await RécupTravaux ();                     
+        travaux = await RecupTravaux ();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
 
@@ -373,7 +372,7 @@ async function EnvoiForm(usr_form) {
         const target = document.querySelector(".contenu_modale");
         target.innerHTML = "";
         AddPhotoModale();
-        travaux = await RécupTravaux ();                     
+        travaux = await RecupTravaux ();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
     else {
@@ -463,16 +462,16 @@ function ValidationForm(img) {
 
 /////****  Lancement des fonctions  ****/////
 
-let travaux = await RécupTravaux ();              // Première récupération des travaux
-let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. Si oui, on charge la page modifiée. Sinon, on charge la page standard.
+let travaux = await RecupTravaux ();              // Première récupération des travaux
+let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. 
 
-if (token != null) {
+if (token != null) {                                // Si oui, on charge la page modifiée. 
     modif_page();
     GenGallery(".gallery");
     await AddModale();
     Modale();
 }
-else {
+else {                                              // Sinon, on charge la page standard.
     GenGallery(".gallery");
     AddFilters(filters());
     FilterGallery();
