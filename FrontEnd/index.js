@@ -1,5 +1,5 @@
 ////*** Récupération des travaux ***////
-async function RecupTravaux () {
+async function GetWorks () {
 
     const req_works = await fetch("http://localhost:5678/api/works/");
     const travaux = await req_works.json();
@@ -91,7 +91,7 @@ function GenGallery (target) {
 }
 
     // Modifications d'index.html si l'utilisateur est connecté
-function modif_page() {
+function Upt_page() {
 
     //Ajout du bloc noir avant le header
     let target = document.querySelector("header"); 
@@ -151,13 +151,13 @@ async function AddModale() {
 
     target.insertAdjacentElement("afterend", div);
     await GenGalleryModale();             // Génération et ajout de la galerie
-    closeModale();
+    CloseModale();
 }
 
     // Génération de la galerie pour la modale
 async function GenGalleryModale() {
 
-    let travaux = await RecupTravaux ();
+    let travaux = await GetWorks();
 
     const galerie_modale = document.createElement("div");
     galerie_modale.className = "galerie_modale";
@@ -227,14 +227,14 @@ async function RemoveObj(imageId) {
     if (req.status === 204) {
         const target = document.querySelector(".galerie_modale");
         target.remove();                                     // On supprime le div de la galerie pour le re-générer
-        travaux = await RecupTravaux ();                     
+        travaux = await GetWorks();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
 
 }
     
     //Fermeture en cliquant sur la croix.
-function closeModale(){
+function CloseModale(){
     const fermer_modale = document.querySelector(".btn_fermer");
     const modale = document.querySelector(".modale");
     fermer_modale.addEventListener("click", () => {
@@ -247,7 +247,7 @@ function closeModale(){
 ////*** Seconde modale ***////
 
     // Ajout d'une flèche de retour en arrière sur la modale
-function AddFlecheReturn() {
+function AddArrowReturn() {
     
     const retour = document.querySelector(".fleche");
     retour.addEventListener("click", async () => {
@@ -281,8 +281,8 @@ function AddPhotoModale(){
     target.appendChild(p);
     
     GenForm(target);
-    AddFlecheReturn();
-    closeModale();
+    AddArrowReturn();
+    CloseModale();
 
     const bar = document.createElement("hr");
     const input = Object.assign(document.createElement("input"), {type: "submit", value: "Valider", id:"btn_form_img"});
@@ -291,7 +291,7 @@ function AddPhotoModale(){
 }
 
     // Prévisualisation de l'image
-function ChrgtImage(img) {
+function LoadImage(img) {
 
     const target = document.querySelector(".ajout_img");
     target.innerHTML="";
@@ -336,7 +336,7 @@ function DivImage() {
                 case "image/jpg":
                 case "image/png":
                 case "image/webp":
-                    ChrgtImage(e.target.files[0]);
+                    LoadImage(e.target.files[0]);
                 break;
     
                 default: 
@@ -372,11 +372,11 @@ async function EnvoiForm(usr_form) {
         const target = document.querySelector(".contenu_modale");
         target.innerHTML = "";
         AddPhotoModale();
-        travaux = await RecupTravaux ();                     
+        travaux = await GetWorks();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
     else {
-        MsgError("Une erreur est survenue")
+        MsgError("Une erreur est survenue");
     }
 }
 
@@ -462,11 +462,11 @@ function ValidationForm(img) {
 
 /////****  Lancement des fonctions  ****/////
 
-let travaux = await RecupTravaux ();              // Première récupération des travaux
+let travaux = await GetWorks();              // Première récupération des travaux
 let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. 
 
 if (token != null) {                                // Si oui, on charge la page modifiée. 
-    modif_page();
+    Upt_page();
     GenGallery(".gallery");
     await AddModale();
     Modale();
