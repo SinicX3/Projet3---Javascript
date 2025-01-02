@@ -1,10 +1,10 @@
 ////*** Récupération des travaux ***////
 async function GetWorks () {
 
-    const req_works = await fetch("http://localhost:5678/api/works/");
-    const travaux = await req_works.json();
+    const ReqWorks = await fetch("http://localhost:5678/api/works/");
+    const Works = await ReqWorks.json();
 
-    return travaux ;
+    return Works ;
 
 }
 
@@ -13,107 +13,107 @@ async function GetWorks () {
 ////*** Premiers éléments du DOM ***////
 
     // Ajout des filtres au DOM
-function AddFilters (l_filters) {
-    let filters = document.querySelector("#portfolio h2");
+function AddFilters (LFilters) {
+    let Filters = document.querySelector("#portfolio h2");
 
-    let ul_filter = document.createElement("div");
-    ul_filter.className="ul_div";
-    filters.insertAdjacentElement("afterend", ul_filter);
-    let filter = document.querySelector(".ul_div");
+    let UlFilter = document.createElement("div");
+    UlFilter.className="ul_div";
+    Filters.insertAdjacentElement("afterend", UlFilter);
+    let Filter = document.querySelector(".ul_div");
 
-    for (let i=0 ; i<l_filters.length ; i++) {
-        let li_filter = document.createElement("div");
-        li_filter.className="li_div";
-        li_filter.innerText = l_filters[i];
-        filter.appendChild(li_filter);
+    for (let i=0 ; i<LFilters.length ; i++) {
+        let LiFilter = document.createElement("div");
+        LiFilter.className="li_div";
+        LiFilter.innerText = LFilters[i];
+        Filter.appendChild(LiFilter);
     }
 }
 
     // Tri des images selon le filtre
 function FilterGallery () {
-    let filterEvent = document.querySelectorAll(".li_div");
-    let gallery = document.querySelector(".gallery");
+    let FilterEvent = document.querySelectorAll(".li_div");
+    let Gallery = document.querySelector(".gallery");
 
-    for (let i=0 ; i<filterEvent.length ; i++) {
-        filterEvent[i].addEventListener("click", () => {
-            gallery.innerHTML = "";
-            for (let j=0 ; j<travaux.length ; j++) {
-                if (filterEvent[i].outerText === travaux[j].category.name) {
-                    const n_work = document.createElement ("figure");
-                    const work_img = document.createElement ("img");
-                    work_img.src = travaux[j].imageUrl;        
-                    const work_title = document.createElement ("figcaption");
-                    work_title.innerText = travaux[j].title;
+    for (let i=0 ; i<FilterEvent.length ; i++) {
+        FilterEvent[i].addEventListener("click", () => {
+            Gallery.innerHTML = "";
+            for (let j=0 ; j<Works.length ; j++) {
+                if (FilterEvent[i].outerText === Works[j].category.name) {
+                    const NewWork = document.createElement ("figure");
+                    const WorkImg = document.createElement ("img");
+                    WorkImg.src = Works[j].imageUrl;        
+                    const WorkTitle = document.createElement ("figcaption");
+                    WorkTitle.innerText = Works[j].title;
     
-                    n_work.appendChild(work_img);
-                    n_work.appendChild(work_title);
+                    NewWork.appendChild(WorkImg);
+                    NewWork.appendChild(WorkTitle);
     
-                    gallery.appendChild(n_work)
+                    Gallery.appendChild(NewWork)
                 }
-                else if (filterEvent[i].outerText === "Tous") (GenGallery(".gallery")) 
+                else if (FilterEvent[i].outerText === "Tous") (GenGallery(".gallery")) 
             }
         });
     }
 }
     
     // Génération de la liste des filtres
-function filters () {
-    let l_filters = ["Tous"];
+function Filters () {
+    let LFilters = ["Tous"];
 
-    for (let i=0 ; i<travaux.length ; i++) {
-        if (l_filters.includes (travaux[i].category.name)) {
+    for (let i=0 ; i<Works.length ; i++) {
+        if (LFilters.includes (Works[i].category.name)) {
         }
-        else {l_filters.push (travaux[i].category.name)}
+        else {LFilters.push (Works[i].category.name)}
     }
 
-    return l_filters;
+    return LFilters;
 }
 
     // Génération/ajout de la galerie
 function GenGallery (target) {
 
-    let gallery = document.querySelector(target);
-    gallery.innerHTML = "";
+    let Gallery = document.querySelector(target);
+    Gallery.innerHTML = "";
 
-    for (let i=0 ; i<travaux.length ; i++) {
-        const n_work = document.createElement ("figure");
-        const work_img = document.createElement ("img");
-        work_img.src = travaux[i].imageUrl;        
-        const work_title = document.createElement ("figcaption");
-        work_title.innerText = travaux[i].title;
+    for (let i=0 ; i<Works.length ; i++) {
+        const NewWork = document.createElement ("figure");
+        const WorkImg = document.createElement ("img");
+        WorkImg.src = Works[i].imageUrl;        
+        const WorkTitle = document.createElement ("figcaption");
+        WorkTitle.innerText = Works[i].title;
 
-        n_work.appendChild(work_img);
-        n_work.appendChild(work_title);
+        NewWork.appendChild(WorkImg);
+        NewWork.appendChild(WorkTitle);
         
-        gallery.appendChild(n_work);
+        Gallery.appendChild(NewWork);
     }
     
 }
 
     // Modifications d'index.html si l'utilisateur est connecté
-function Upt_page() {
+function UptPage() {
 
     //Ajout du bloc noir avant le header
-    let target = document.querySelector("header"); 
-    const div = document.createElement("div");
-    div.className = "bloc_edit"
+    let Target = document.querySelector("header"); 
+    const Div = document.createElement("div");
+    Div.className = "bloc_edit"
 
-    div.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> Mode édition`;
-    target.style.paddingTop = "100px";                                 // Le header descend de 100 px pour laisser de la place au bloc "Mode édition"
-    target.insertAdjacentElement("beforebegin", div);
+    Div.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> Mode édition`;
+    Target.style.paddingTop = "100px";                                 // Le header descend de 100 px pour laisser de la place au bloc "Mode édition"
+    Target.insertAdjacentElement("beforebegin", Div);
 
     //Ajout du bouton "Modifier"
-    target = document.querySelector("#portfolio h2");
-    const div2 = document.createElement("div");
-    div2.className = "modif_btn";
-    div2.id = "btn_modale";
-    div2.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> modifier`;
-    target.insertAdjacentElement("afterend", div2);
+    Target = document.querySelector("#portfolio h2");
+    const Div2 = document.createElement("div");
+    Div2.className = "modif_btn";
+    Div2.id = "btn_modale";
+    Div2.innerHTML = `<i class="fa-regular fa-pen-to-square";"></i> modifier`;
+    Target.insertAdjacentElement("afterend", Div2);
 
     //Remplacement de "login" par "logout"
-    target = document.querySelectorAll('li')[2];
-    target.innerText = "logout"
-    target.addEventListener("click", () => {                        // Si on clique sur "logout", on supprime le token et on recharge la page
+    Target = document.querySelectorAll('li')[2];
+    Target.innerText = "logout"
+    Target.addEventListener("click", () => {                        // Si on clique sur "logout", on supprime le token et on recharge la page
         window.localStorage.removeItem("token");                    
         window.location.href = "index.html";                        
     });                                                             
@@ -124,121 +124,121 @@ function Upt_page() {
 ////*** Première modale ***////
 
     // Ajout de la première modale
-async function AddModale() {
+async function AddModal() {
 
     // Création des éléments de la modale
-    let target = document.getElementById("contact");
-    const div = document.createElement("div");
-    div.className = "modale";
+    let Target = document.getElementById("contact");
+    const Div = document.createElement("div");
+    Div.className = "modal";
 
-    const innerDiv = document.createElement("div");
-    innerDiv.className = "contenu_modale";
+    const InnerDiv = document.createElement("div");
+    InnerDiv.className = "contentModal";
 
-    const div_btn = Object.assign(document.createElement("div"), {className:"entete_1"});
-    const span = Object.assign(document.createElement("span"), {className:"btn_fermer", innerHTML:`<i class="fa-solid fa-xmark"></i>`});
-    div_btn.appendChild(span);
-    const p = Object.assign(document.createElement("p"), {innerText:"Galerie photo"});
+    const DivBtn = Object.assign(document.createElement("div"), {className:"header1"});
+    const Span = Object.assign(document.createElement("span"), {className:"btnClose", innerHTML:`<i class="fa-solid fa-xmark"></i>`});
+    DivBtn.appendChild(Span);
+    const P = Object.assign(document.createElement("p"), {innerText:"Galerie photo"});
 
-    const bar = document.createElement("hr");
-    const input = Object.assign(document.createElement("input"), {type:"submit", value:"Ajouter une photo"});
+    const Bar = document.createElement("hr");
+    const Input = Object.assign(document.createElement("input"), {type:"submit", value:"Ajouter une photo"});
 
     // Ajout des éléments à la modale
-    innerDiv.appendChild(div_btn);
-    innerDiv.appendChild(p);
-    innerDiv.appendChild(bar);
-    innerDiv.appendChild(input);
-    div.appendChild(innerDiv);
+    InnerDiv.appendChild(DivBtn);
+    InnerDiv.appendChild(P);
+    InnerDiv.appendChild(Bar);
+    InnerDiv.appendChild(Input);
+    Div.appendChild(InnerDiv);
 
-    target.insertAdjacentElement("afterend", div);
-    await GenGalleryModale();             // Génération et ajout de la galerie
-    CloseModale();
+    Target.insertAdjacentElement("afterend", Div);
+    await GenGalleryModal();             // Génération et ajout de la galerie
+    CloseModal();
 }
 
     // Génération de la galerie pour la modale
-async function GenGalleryModale() {
+async function GenGalleryModal() {
 
-    let travaux = await GetWorks();
+    let Works = await GetWorks();
 
-    const galerie_modale = document.createElement("div");
-    galerie_modale.className = "galerie_modale";
-    for (let i=0 ; i<travaux.length ; i++) {
-        const n_work = document.createElement ("figure");
-        const work_img = document.createElement ("img");
-        work_img.src = travaux[i].imageUrl;        
-        const corbeille = document.createElement ("div");
-        corbeille.className = "corbeille";
-        corbeille.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+    const GalleryModal = document.createElement("div");
+    GalleryModal.className = "galleryModal";
+    for (let i=0 ; i<Works.length ; i++) {
+        const NewWork = document.createElement ("figure");
+        const WorkImg = document.createElement ("img");
+        WorkImg.src = Works[i].imageUrl;        
+        const Bin = document.createElement ("div");
+        Bin.className = "bin";
+        Bin.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
 
-        n_work.appendChild(corbeille);
-        n_work.appendChild(work_img);
+        NewWork.appendChild(Bin);
+        NewWork.appendChild(WorkImg);
         
-        galerie_modale.appendChild(n_work);
+        GalleryModal.appendChild(NewWork);
     
-        corbeille.addEventListener("click", async () => {
-            await RemoveObj(travaux[i].id);
-            await GenGalleryModale();
+        Bin.addEventListener("click", async () => {
+            await RemoveObj(Works[i].id);
+            await GenGalleryModal();
         });
     }
 
-    const target = document.querySelector(".contenu_modale p");
-    target.insertAdjacentElement("afterend", galerie_modale);
-    //target.appendChild(galerie_modale);
+    const Target = document.querySelector(".contentModal p");
+    Target.insertAdjacentElement("afterend", GalleryModal);
+
 }
 
     // Ouverture/fermeture de la modale
-function Modale(){
-    const ouvrir_modale = document.getElementById("btn_modale");
-    const modale = document.querySelector(".modale");
-    const fermer_modale = document.querySelector(".btn_fermer");
-    const btn_ajout_photo = document.querySelector(".contenu_modale input");
+function Modal(){
+    const OpenModal = document.getElementById("btn_modale");
+    const Modal = document.querySelector(".modal");
+    const CloseModal = document.querySelector(".btnClose");
+    const BtnAddPhoto = document.querySelector(".contentModal input");
 
-    ouvrir_modale.addEventListener("click", () => {
-        modale.style.display = "grid";
+    OpenModal.addEventListener("click", () => {
+        Modal.style.display = "grid";
     });
 
-    fermer_modale.addEventListener("click", () => {
-        modale.style.display = "none";
+    CloseModal.addEventListener("click", () => {
+        Modal.style.display = "none";
     });
 
     window.addEventListener("click", function(event) {
-        if (event.target === modale) {
-            modale.style.display = "none";
+        if (event.target === Modal) {
+            Modal.style.display = "none";
         }
     });
 
-    btn_ajout_photo.addEventListener("click", () => {
-        AddPhotoModale();
+    BtnAddPhoto.addEventListener("click", () => {
+        AddPhotoModal();
     });
 } 
     
     // Suppression d'une image
 async function RemoveObj(imageId) {
 
-    const token = window.localStorage.getItem("token");
+    const Token = window.localStorage.getItem("token");
 
-    const req = await fetch(`http://localhost:5678/api/works/${imageId}`, {
+    const Req = await fetch(`http://localhost:5678/api/works/${imageId}`, {
         method: "DELETE",
         headers: {
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${Token}`,
             "Content-Type": "application/json"
         },
     });
 
-    if (req.status === 204) {
-        const target = document.querySelector(".galerie_modale");
-        target.remove();                                     // On supprime le div de la galerie pour le re-générer
-        travaux = await GetWorks();                     
+    if (Req.status === 204) {
+        const Target = document.querySelector(".galleryModal");
+        Target.remove();                                     // On supprime le div de la galerie pour le re-générer
+        Works = await GetWorks();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
 
 }
     
     //Fermeture en cliquant sur la croix.
-function CloseModale(){
-    const fermer_modale = document.querySelector(".btn_fermer");
-    const modale = document.querySelector(".modale");
-    fermer_modale.addEventListener("click", () => {
-        modale.style.display = "none";
+function CloseModal(){
+    const CloseModal = document.querySelector(".btnClose");
+    const Modal = document.querySelector(".modal");
+    CloseModal.addEventListener("click", () => {
+        Modal.style.display = "none";
     });
 } 
 
@@ -249,85 +249,85 @@ function CloseModale(){
     // Ajout d'une flèche de retour en arrière sur la modale
 function AddArrowReturn() {
     
-    const retour = document.querySelector(".fleche");
-    retour.addEventListener("click", async () => {
-        const innerDiv = document.querySelector(".modale");
-        innerDiv.remove();
-        await AddModale();
-        Modale();
-        const modale = document.querySelector(".modale");
-        modale.style.display = "grid";
+    const Return = document.querySelector(".arrow");
+    Return.addEventListener("click", async () => {
+        const InnerDiv = document.querySelector(".modal");
+        InnerDiv.remove();
+        await AddModal();
+        Modal();
+        const SelectModal = document.querySelector(".modal");
+        SelectModal.style.display = "grid";
     });
 
 }
 
     // Deuxième modale (ajout photo)
-function AddPhotoModale(){
+function AddPhotoModal(){
 
-    const target = document.querySelector(".contenu_modale");
-    target.innerHTML="";
+    const Target = document.querySelector(".contentModal");
+    Target.innerHTML="";
 
-    const div_entete = document.createElement("div");
-    div_entete.className = "entete_2";
-    const span_btn = Object.assign(document.createElement("span"), {className: "btn_fermer", innerHTML: `<i class="fa-solid fa-xmark"></i>`});
-    const fleche = Object.assign(document.createElement("span"), {className: "fleche", id: "btn_fleche", innerHTML: `<i class="fa-solid fa-arrow-left"></i>`});
+    const DivHeader = document.createElement("div");
+    DivHeader.className = "header2";
+    const SpanBtn = Object.assign(document.createElement("span"), {className: "btnClose", innerHTML: `<i class="fa-solid fa-xmark"></i>`});
+    const Arrow = Object.assign(document.createElement("span"), {className: "arrow", id: "btn_fleche", innerHTML: `<i class="fa-solid fa-arrow-left"></i>`});
 
-    div_entete.appendChild(fleche);
-    div_entete.appendChild(span_btn);
-    target.appendChild(div_entete);
+    DivHeader.appendChild(Arrow);
+    DivHeader.appendChild(SpanBtn);
+    Target.appendChild(DivHeader);
 
-    const p = document.createElement("p");
-    p.innerText = "Ajout photo";
-    target.appendChild(p);
+    const P = document.createElement("p");
+    P.innerText = "Ajout photo";
+    Target.appendChild(P);
     
-    GenForm(target);
+    GenForm(Target);
     AddArrowReturn();
-    CloseModale();
+    CloseModal();
 
-    const bar = document.createElement("hr");
-    const input = Object.assign(document.createElement("input"), {type: "submit", value: "Valider", id:"btn_form_img"});
-    target.appendChild(bar);
-    target.appendChild(input);
+    const Bar = document.createElement("hr");
+    const Input = Object.assign(document.createElement("input"), {type: "submit", value: "Valider", id:"btn_form_img"});
+    Target.appendChild(Bar);
+    Target.appendChild(Input);
 }
 
     // Prévisualisation de l'image
-function LoadImage(img) {
+function LoadImage(Img) {
 
-    const target = document.querySelector(".ajout_img");
-    target.innerHTML="";
+    const Target = document.querySelector(".addImg");
+    Target.innerHTML="";
 
-    const div_wrapper = document.createElement("div"); // Cette div sert à recevoir la prévisualisation de l'image uploadée
-    div_wrapper.id = "div_wrapper";
-    const previewImg = document.createElement("img");
+    const DivWrapper = document.createElement("div"); // Cette div sert à recevoir la prévisualisation de l'image uploadée
+    DivWrapper.id = "divWrapper";
+    const PreviewImg = document.createElement("img");
 
-    const image = URL.createObjectURL(img); // Génération du blob pour la prévisualisation
-    previewImg.src = image ;
-    previewImg.id = "img_id";
-    div_wrapper.appendChild(previewImg);
-    target.appendChild(div_wrapper);
+    const Image = URL.createObjectURL(Img); // Génération du blob pour la prévisualisation
+    PreviewImg.src = Image ;
+    PreviewImg.id = "img_id";
+    DivWrapper.appendChild(PreviewImg);
+    Target.appendChild(DivWrapper);
 
-    ValidationForm(img);
+    ValidForm(Img);
 }
 
     // Construction de la div d'upload d'image pour la seconde modale
 function DivImage() {
 
-    const div = document.createElement("div");
-    div.className = "ajout_img";
+    const Div = document.createElement("div");
+    Div.className = "addImg";
 
         // Construction du bouton d'upload
-    const div_ajoutImage = Object.assign(document.createElement("div"));
-    const btn_ajoutImage = Object.assign(document.createElement("input"), {type: "file", name: "photo", id: "photo"});
-    const label_btn_ajoutImage = Object.assign(document.createElement("button"), {type: "button", innerText: "+ Ajouter photo", id: "label_photo"});
-    label_btn_ajoutImage.appendChild(btn_ajoutImage);
-    div_ajoutImage.appendChild(label_btn_ajoutImage);
+    const DivAddImage = Object.assign(document.createElement("div"));
+    const BtnAddImage = Object.assign(document.createElement("input"), {type: "file", name: "photo", id: "photo"});
+    const LabelBtnAddImage = Object.assign(document.createElement("button"), {type: "button", innerText: "+ Ajouter photo", id: "labelPhoto"});
+    LabelBtnAddImage.appendChild(BtnAddImage);
+    DivAddImage.appendChild(LabelBtnAddImage);
 
-    btn_ajoutImage.addEventListener("change", (e) => {
-        const target = document.querySelector(".error");            // Si un message d'erreur est affiché, on le supprime
-        if (target) {target.remove()};
+    BtnAddImage.addEventListener("change", (e) => {
+        const Target = document.querySelector(".error");            // Si un message d'erreur est affiché, on le supprime
+        if (Target) {Target.remove()};
 
         if (e.target.files[0].size > 4000000){
-            if (target) {target.remove()};    
+            if (Target) {Target.remove()};    
             MsgError("l'image est trop grande");
         }
         else {
@@ -345,34 +345,34 @@ function DivImage() {
         }
     });
 
-    label_btn_ajoutImage.addEventListener("click", () => {btn_ajoutImage.click()}); // Quand on appuie sur le label, c'est l'input caché qui réagit.
+    LabelBtnAddImage.addEventListener("click", () => {BtnAddImage.click()}); // Quand on appuie sur le label, c'est l'input caché qui réagit.
 
     const img = Object.assign(document.createElement("span"), {innerHTML: `<i class="fa-regular fa-image"></i>`});
     const text = Object.assign(document.createElement("p"), {innerText: "jpg, png : 4mo max"});
-    [img, div_ajoutImage, text].forEach(e => div.appendChild(e));
+    [img, DivAddImage, text].forEach(e => Div.appendChild(e));
 
-    return div;
+    return Div;
 }
 
     // Envoi de la requête à l'API
-async function EnvoiForm(usr_form) {
+async function SendForm(usr_form) {
 
-    const token = window.localStorage.getItem("token");
-    const req = await fetch(`http://localhost:5678/api/works`, {
+    const Token = window.localStorage.getItem("token");
+    const Req = await fetch(`http://localhost:5678/api/works`, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${Token}`,
             "Accept": "application/json"
         },
         body: usr_form
         
     });
 
-    if (req.status === 201) {
-        const target = document.querySelector(".contenu_modale");
-        target.innerHTML = "";
-        AddPhotoModale();
-        travaux = await GetWorks();                     
+    if (Req.status === 201) {
+        const Target = document.querySelector(".contentModal");
+        Target.innerHTML = "";
+        AddPhotoModal();
+        Works = await GetWorks();                     
         GenGallery(".gallery");                              // MàJ des travaux, puis re-génération de la galerie
     }
     else {
@@ -381,78 +381,78 @@ async function EnvoiForm(usr_form) {
 }
 
     // Construction du formulaire
-function GenForm(target) {
+function GenForm(Target) {
 
-    const form = Object.assign(document.createElement("form"), {className: "modale2"});                    
-    const input_f = DivImage();   
-    const label_t = Object.assign(document.createElement("label"), {for: "titre", innerText: "Titre"});        
-    const input_t = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
-    const label_c = Object.assign(document.createElement("label"), {for: "catégorie", innerText: "Catégorie"});   
+    const Form = Object.assign(document.createElement("form"), {className: "modal2"});                    
+    const InputF = DivImage();   
+    const LabelT = Object.assign(document.createElement("label"), {for: "titre", innerText: "Titre"});        
+    const InputT = Object.assign(document.createElement("input"), {type: "text", name: "titre", id: "titre"});
+    const LabelC = Object.assign(document.createElement("label"), {for: "catégorie", innerText: "Catégorie"});   
 
         // Choix possibles pour la liste des catégories
-    const input_c = Object.assign(document.createElement("select"), {name: "category", id: "catégorie"});
-    const l_filters = filters();
-    for (let i=0 ; i<l_filters.length; i++) {
-        const option = document.createElement("option");
-        option.innerHTML = l_filters[i];
-        option.value = l_filters[i];
-        if (option.value === "Tous"){
-            option.value = "";                                      // On retire le "Tous" parmi les choix
-            option.innerText = "";
+    const InputC = Object.assign(document.createElement("select"), {name: "category", id: "catégorie"});
+    const LFilters = Filters();
+    for (let i=0 ; i<LFilters.length; i++) {
+        const Option = document.createElement("option");
+        Option.innerHTML = LFilters[i];
+        Option.value = LFilters[i];
+        if (Option.value === "Tous"){
+            Option.value = "";                                      // On retire le "Tous" parmi les choix
+            Option.innerText = "";
         }                  
-        input_c.appendChild(option);
+        InputC.appendChild(Option);
     }                                      
 
         // Ajout de la flèche sur la liste des catégories
-    const div_input_c = document.createElement("div");
-    div_input_c.className = "div_category";
-    const fleche_cat = Object.assign(document.createElement("span"), {id:"cat_fleche", innerHTML:`<i class="fa-solid fa-chevron-down"></i>`});
+    const DivInputC = document.createElement("div");
+    DivInputC.className = "div_category";
+    const ArrowCategory = Object.assign(document.createElement("span"), {id:"arrowCategory", innerHTML:`<i class="fa-solid fa-chevron-down"></i>`});
 
-    div_input_c.appendChild(input_c);
-    div_input_c.appendChild(fleche_cat);
+    DivInputC.appendChild(InputC);
+    DivInputC.appendChild(ArrowCategory);
 
-    [input_f, label_t, input_t, label_c, div_input_c].forEach(e => form.appendChild(e));
-    target.appendChild(form);
+    [InputF, LabelT, InputT, LabelC, DivInputC].forEach(e => Form.appendChild(e));
+    Target.appendChild(Form);
 
 }
 
-function MsgError (msg) {
-    const target = document.querySelector(".contenu_modale hr");
-    const error = Object.assign(document.createElement("div"), {innerText: `Erreur : ${msg}`, className: "error"})
-    target.insertAdjacentElement("beforebegin", error);
+    // Affichage des messages d'erreur
+function MsgError (Msg) {
+    const Target = document.querySelector(".contentModal hr");
+    const Error = Object.assign(document.createElement("div"), {innerText: `Erreur : ${Msg}`, className: "error"})
+    Target.insertAdjacentElement("beforebegin", Error);
 }
 
     // Récupération des données entrées par l'utilisateur pour l'ajout d'image
-function ValidationForm(img) {
+function ValidForm(Img) {
     
-    const form = document.querySelector(".modale2");
-    const btn_form = document.getElementById("btn_form_img");
+    const Form = document.querySelector(".modal2");
+    const BtnForm = document.getElementById("btn_form_img");
 
-    form.addEventListener("change", () => {
+    Form.addEventListener("change", () => {
 
-        if (!form[0].value || !form[1].value) {
-            btn_form.style.backgroundColor = "#4d4d4d54";               // On vérifie que les champs sont tous remplis
+        if (!Form[0].value || !Form[1].value) {
+            BtnForm.style.backgroundColor = "#4d4d4d54";               // On vérifie que les champs sont tous remplis
         }
 
-        if (form[0].value && form[1].value) {
-            btn_form.style.backgroundColor = "#1D6154";
-
-            btn_form.addEventListener("click", () => {
-                
-                const usr_form = new FormData();
-                usr_form.append("title", form[0].value);
-                usr_form.append("category", form[1].selectedIndex);
-                usr_form.append("image", img);
-                
-                if (form[0].value && form[1].value) {
-                    EnvoiForm(usr_form);
-                }
-                
-            })
+        if (Form[0].value && Form[1].value) {
+            BtnForm.style.backgroundColor = "#1D6154";
         }
-        
 
     });
+
+    BtnForm.addEventListener("click", () => {
+           
+        const UsrForm = new FormData();
+        UsrForm.append("title", Form[0].value);
+        UsrForm.append("category", Form[1].selectedIndex);
+        UsrForm.append("image", Img);
+        
+        if (Form[0].value && Form[1].value) {
+            SendForm(UsrForm);
+        }
+
+    })
 
 }
 
@@ -462,17 +462,17 @@ function ValidationForm(img) {
 
 /////****  Lancement des fonctions  ****/////
 
-let travaux = await GetWorks();              // Première récupération des travaux
-let token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. 
+let Works = await GetWorks();              // Première récupération des travaux
+let Token = window.localStorage.getItem("token"); // On regarde si l'utilisateur dispose d'un token. 
 
-if (token != null) {                                // Si oui, on charge la page modifiée. 
-    Upt_page();
+if (Token != null) {                                // Si oui, on charge la page modifiée. 
+    UptPage();
     GenGallery(".gallery");
-    await AddModale();
-    Modale();
+    await AddModal();
+    Modal();
 }
 else {                                              // Sinon, on charge la page standard.
     GenGallery(".gallery");
-    AddFilters(filters());
+    AddFilters(Filters());
     FilterGallery();
 };

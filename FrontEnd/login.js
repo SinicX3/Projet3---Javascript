@@ -1,70 +1,68 @@
 // On écoute le bouton "Se connecter"
-const login_btn = document.querySelector("input[type='submit']");
+const LoginBtn = document.querySelector("input[type='submit']");
 
 // Sinon, au clic, récupération des identifiants entrés par l'utilisateur
-function auth_usr() {
-    login_btn.addEventListener("click", (event) =>{
+function AuthUsr() {
+    LoginBtn.addEventListener("click", (event) =>{
         event.preventDefault();
 
-        const user_form = document.querySelector("form");
-        const body_usr = {
-            "email" : user_form.email.value,
-            "password" : user_form.pw.value
+        const UsrForm = document.querySelector("form");
+        const BodyUsr = {
+            "email" : UsrForm.email.value,
+            "password" : UsrForm.pw.value
         };
 
-        auth_server (body_usr);
+        AuthSrv(BodyUsr);
     })
 }
 
 // Authentification auprès du serveur
-async function auth_server (body_usr) {
-    const req = await fetch("http://localhost:5678/api/users/login", {
+async function AuthSrv (BodyUsr) {
+    const Req = await fetch("http://localhost:5678/api/users/login", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify (body_usr)
+        body: JSON.stringify (BodyUsr)
     });
-    const reponse = await req.json();
+    const SrvAnswer = await Req.json();
 
-    if (req.ok) {
+    if (Req.ok) {
         window.localStorage.removeItem("token");
-        console.log(reponse.token);
-        window.localStorage.setItem("token", reponse.token);       // Stockage du token, puis redirection vers index.html
+        window.localStorage.setItem("token", SrvAnswer.token);       // Stockage du token, puis redirection vers index.html
         window.location.href = "index.html";
-
-        window.localStorage.setItem("userId", reponse.userId);
+        window.localStorage.setItem("userId", SrvAnswer.userId);
     } else {
-        Error_Message (req.status);
+        ErrorMessage (Req.status);
     }
 }
 
 // Ajout du message d'erreur en cas de problème
-function Error_Message (reponse) {
-    const target = document.querySelector("#login h2");
-    const check = document.querySelector("#login div");
+function ErrorMessage (response) {
+    const Target = document.querySelector("#login h2");
+    const Check = document.querySelector("#login div");
 
-    if (check !== null) {
-        check.remove();
+    if (Check !== null) {
+        Check.remove();
     }
 
-    let div_message = document.createElement ("div");
-    let message = "";
+    let DivMsg = document.createElement ("div");
+    let Msg = "";
 
-    switch (reponse) {
+    switch (response) {
         case 400:
-            message = "Votre upload ne respecte pas le format demandé"
+            Msg = "Votre upload ne respecte pas le format demandé"
             break;
         case 401:
-            message = "Vos identifiants sont incorrects"
+            Msg = "Vos identifiants sont incorrects"
             break;
         case 500:
-            message = "La base de données a rencontré un problème"
+            Msg = "La base de données a rencontré un problème"
             break;
         default:
-            message = "Une erreur inconnue est survenue"
+            Msg = "Une erreur inconnue est survenue"
     }
 
-    div_message.innerText = message;
-    target.insertAdjacentElement("afterend", div_message);
+    DivMsg.innerText = Msg;
+    Target.insertAdjacentElement("afterend", DivMsg);
 }
 
-auth_usr();
+AuthUsr();
